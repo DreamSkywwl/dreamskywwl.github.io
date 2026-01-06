@@ -27,8 +27,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run script
-        run: echo "任务执行时间hourly: $(date '+%Y-%m-%d %H:%M:%S')"
       
       - name: Run Python script
         run: python dayToHour.py
