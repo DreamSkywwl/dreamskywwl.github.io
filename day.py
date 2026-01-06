@@ -155,6 +155,6 @@ if __name__ == '__main__':
     msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
     msg2 = 'Tips: 孩子已经' + str(d5) + '天'
     print(msg)
-    # notification_Model().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    notification_Model.notificationWeChatToken(notification_Model,titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     # notification_Model.notificationWeChatToken(notification_Model,titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     weChat_listening().requestURL()
