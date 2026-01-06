@@ -1,14 +1,18 @@
 
-name: Hourly Python Script
+name: test Python Script
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时执行一次
+    # - cron: '32 6 * * *'  
+    # 每天 6 点执行
+    - cron: '*/5 * * * *'  
+    # 每5分钟执行一次
 
 jobs:
   run-python:
     runs-on: ubuntu-latest
     steps:
+    
       - name: Checkout code
         uses: actions/checkout@v2
       
@@ -27,6 +31,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      
       - name: Run Python script
-        run: python ./dayToHour.py
+        run: python ./day.py
+# python ./validation-dashboard/json2htmlrunner.py
