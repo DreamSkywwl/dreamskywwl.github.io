@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
+# 一天计数一次
 import json
 from urllib.parse import quote, unquote
 import datetime
-
+import time
 
 import requests
 from bs4 import BeautifulSoup
@@ -36,10 +37,11 @@ class weChat_listening:
         print(str(yes_time) + '-----' + item_time)
         if item_time in str(yes_time):
             print(item_title)
-            notification_class().notificationToken("微信公众号系统公告", item_title)
+            time.sleep(2)
+            notification_Model.notificationWeChatToken(notification_Model,"微信公众号系统公告", item_title)
         else:
             print(item_title)
-            # notification_class().notificationToken(item_title, item_time)
+            # notification_Model().notificationToken(item_title, item_time)
         
         
         # if resultStrring:
@@ -53,7 +55,7 @@ class weChat_listening:
 
 
 
-class notification_class:
+class notification_Model:
     # 钉钉机器人的调用
     def dingdingTalk(self,msg):
         HEADERS = {"Content-Type": "application/json;charset=utf-8"}
@@ -85,34 +87,48 @@ class notification_class:
         else:
             print(res.text)
     def notificationWeChatToken(self,titleMsg, message):
-        url = "https://api.anpush.com/push/UUW4N522SA4JRHQQT9RH1I5Z21MMP4"
-
+        url = "https://push.showdoc.com.cn/server/api/push/303b94dcc4ac08927ccbce0e72ad9fec430211407"
+        # nowTmp = message
+        # if len(regueURL) != 0:
+        #     third = quote(regueURL, 'utf-8')
+        #     nowTmp = nowTmp + '\n<br /> url:' + third
         payload = {
             "title": titleMsg,
             "content": message,
-            "channel": "63552"
+            "user_token": "12307831fb70e549bb4d5af466858b64839451758"
         }
+
+        # print('payload:', payload)
 
         headers = {
-            "Content-Type": "application/x-www-form-urlencoded"
+            "accept": "application/json, text/plain, */*",
+            "accept-language": "zh-CN,zh;q=0.9",
+            "content-type": "application/x-www-form-urlencoded",
+            "priority": "u=1, i",
+            "sec-ch-ua": "\"Google Chrome\";v=\"137\", \"Chromium\";v=\"137\", \"Not/A)Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-origin"
         }
 
-        print(url)
         response = requests.post(url, headers=headers, data=payload)
-        print(response.status_code)
-        notification_class().notificationWeChatToken2(titleMsg, message)
+        notification_Model().notificationWeChatToken2(titleMsg)
         print(response.text)
-    def notificationWeChatToken2(self,titleMsg, message):
+    
+    def notificationWeChatToken2(self,titleMsg, ):
+        
         url = "https://api.letserver.run/message/info?token=cq0mkh8jn87bju92b0ag&msg=" + titleMsg
-        print(url)
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
         }
 
         response = requests.get(url, headers=headers)
 
-        print(response.status_code)
         print(response.text)
+
+ 
 
  
 
@@ -124,8 +140,8 @@ def handler(event, context):
     d5 = (d1 - d3).days + 1; # 孩子已经多少天
     msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
     msg2 = 'Tips: 孩子已经' + str(d5) + '天'
-    # notification_class().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    notification_class().notificationWeChatToken2(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    # notification_Model().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    notification_Model.notificationWeChatToken(notification_Model,titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     weChat_listening().requestURL()
   
 
@@ -139,22 +155,6 @@ if __name__ == '__main__':
     msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
     msg2 = 'Tips: 孩子已经' + str(d5) + '天'
     print(msg)
-    # notification_class().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    notification_class().notificationWeChatToken2(titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    # weChat_listening().requestURL()
-
-
-
-
-
-d1 = datetime.datetime.now();
-d2 = datetime.datetime(2021, 2, 17);
-d3 = datetime.datetime(2024, 5, 16);
-d4 = (d1 - d2).days + 1; # 在一起多久
-d5 = (d1 - d3).days + 1; # 孩子已经多少天
-msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
-msg2 = 'Tips: 孩子已经' + str(d5) + '天'
-print(msg)
-    # notification_class().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-notification_class().notificationWeChatToken2(titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
-    # weChat_listening().requestURL()
+    # notification_Model().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    # notification_Model.notificationWeChatToken(notification_Model,titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    weChat_listening().requestURL()
