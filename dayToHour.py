@@ -81,16 +81,17 @@ class fuliba:
 
     def transformTime(self,oneTime):
         # 解析目标时间
-        target_time = datetime.datetime.strptime(oneTime, "%a, %d %b %Y %H:%M:%S %z")
+        target_time = datetime.strptime(oneTime, "%a, %d %b %Y %H:%M:%S %z")
         
         # 设置目标时区为上海
         target_time = target_time.astimezone(pytz.timezone('Asia/Shanghai'))
         
         # 获取当前时间（上海时区）
-        now = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
+        now = datetime.now(pytz.timezone('Asia/Shanghai'))
         
         # 计算时间差
         time_diff = now - target_time
+        print('time_diff:',time_diff)
         return time_diff <= 3600        
     
 
@@ -178,24 +179,24 @@ class result_model:
     def total_func():
         arrOne = []
         arrOne = fuliba().netWork()
-        arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
-        # arr_uuids = ['1063982987485245', ]
-        arrSecond = []
-        for item in arr_uuids:
-            arrThird = juejin().loadData(item)
-            arrSecond.extend(arrThird)
-            time.sleep(10)
-        title = '文章更新汇总'
+        # arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
         
-        if len(arrOne) == 0:
-            title = '知乎文章更新'
-        if len(arrSecond) == 0:
-            title = '掘金文章更新'
-        arrLast = arrOne+arrSecond
-        content = '\n'.join(arrLast)
+        # arrSecond = []
+        # for item in arr_uuids:
+        #     arrThird = juejin().loadData(item)
+        #     arrSecond.extend(arrThird)
+        #     time.sleep(10)
+        # title = '文章更新汇总'
+        
+        # if len(arrOne) == 0:
+        #     title = '知乎文章更新'
+        # if len(arrSecond) == 0:
+        #     title = '掘金文章更新'
+        # arrLast = arrOne+arrSecond
+        # content = '\n'.join(arrLast)
 
-        if len(arrLast) != 0:
-            notification_Model.notificationWeChatToken(notification_Model, title, content)
+        # if len(arrLast) != 0:
+        #     notification_Model.notificationWeChatToken(notification_Model, title, content)
             
              
 
