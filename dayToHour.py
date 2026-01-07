@@ -197,6 +197,8 @@ class result_model:
 
         if len(arrLast) != 0:
             notification_Model.notificationWeChatToken(notification_Model, title, content)
+        else:
+            notification_Model.notificationWeChatToken(notification_Model, '无更新', '')
             
              
 
