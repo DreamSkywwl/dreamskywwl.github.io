@@ -136,7 +136,7 @@
         dataArray.forEach(item => {
           if (item.content && typeof item.content === 'string') {
             // 匹配data-original属性中的图片链接 src
-            const dataOriginalRegex = /src\s*=\s*["']([^"']+\.(?:jpg|jpeg|png|gif|bmp|webp)(?:\?[^"']*)?)["']/gi;
+            const dataOriginalRegex = /data-original\s*=\s*["']([^"']+\.(?:jpg|jpeg|png|gif|bmp|webp)(?:\?[^"']*)?)["']/gi;
             const matches = item.content.matchAll(dataOriginalRegex);
             for (const match of matches) {
               allLinks.push(match[1]);
