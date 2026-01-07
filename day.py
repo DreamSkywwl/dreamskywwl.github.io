@@ -132,7 +132,7 @@ class notification_Model:
 
  
 
-def handler(event, context):
+def handler():
     d1 = datetime.datetime.now();
     d2 = datetime.datetime(2021, 2, 17);
     d3 = datetime.datetime(2024, 5, 16);
@@ -150,7 +150,6 @@ if __name__ == '__main__':
     # handler()
     print('')
     '''
-    
     d1 = datetime.datetime.now();
     d2 = datetime.datetime(2021, 2, 17);
     d3 = datetime.datetime(2024, 5, 16);
