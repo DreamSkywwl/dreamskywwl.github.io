@@ -92,7 +92,7 @@ class fuliba:
         # 计算时间差
         time_diff = now - target_time
         print('time_diff:',time_diff)
-        return time_diff.total_seconds <= 3600        
+        return time_diff.total_seconds() <= 3600        
     
 
 
