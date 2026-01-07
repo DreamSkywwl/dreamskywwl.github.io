@@ -1,5 +1,6 @@
 
-
+# -*- coding:utf-8 -*-
+#coding=utf-8
 
 import requests
 import time
@@ -10,10 +11,7 @@ import time
 class notification_Model:
     def notificationWeChatToken(self,titleMsg, message):
         url = "https://push.showdoc.com.cn/server/api/push/303b94dcc4ac08927ccbce0e72ad9fec430211407"
-        # nowTmp = message
-        # if len(regueURL) != 0:
-        #     third = quote(regueURL, 'utf-8')
-        #     nowTmp = nowTmp + '\n<br /> url:' + third
+       
         payload = {
             "title": titleMsg,
             "content": message,
@@ -32,8 +30,11 @@ class notification_Model:
             "sec-fetch-mode": "cors",
             "sec-fetch-site": "same-origin"
         }
-
-        response = requests.post(url, headers=headers, data=payload)
+        requests.adapters.DEFAULT_RETRIES = 5 # 增加重连次数
+        s = requests.session()
+        s.keep_alive = False # 关闭多余连接
+        # s.proxies = {"https": "47.100.104.247:8080", "http": "36.248.10.47:8080", }
+        response = s.post(url, headers=headers, data=payload)
         print(response.text)
 
 
