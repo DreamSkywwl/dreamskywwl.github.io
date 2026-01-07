@@ -140,13 +140,17 @@ def handler(event, context):
     d5 = (d1 - d3).days + 1; # 孩子已经多少天
     msg = 'Tips: 认识晓粉已经' + str(d4) + '天'
     msg2 = 'Tips: 孩子已经' + str(d5) + '天'
-    # notification_Model().notificationWeChatToken(titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    print(msg)
     notification_Model.notificationWeChatToken(notification_Model,titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
+    # notification_Model.notificationWeChatToken(notification_Model,titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     weChat_listening().requestURL()
   
-
+handler()
 if __name__ == '__main__':
     # handler()
+    print('')
+    '''
+    
     d1 = datetime.datetime.now();
     d2 = datetime.datetime(2021, 2, 17);
     d3 = datetime.datetime(2024, 5, 16);
@@ -158,3 +162,5 @@ if __name__ == '__main__':
     notification_Model.notificationWeChatToken(notification_Model,titleMsg='宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     # notification_Model.notificationWeChatToken(notification_Model,titleMsg='AAA宝宝' + str(d5) + '天', message=msg + '<br />\n' + msg2)
     weChat_listening().requestURL()
+
+    '''

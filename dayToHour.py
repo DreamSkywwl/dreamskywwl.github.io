@@ -92,7 +92,7 @@ class fuliba:
         # 计算时间差
         time_diff = now - target_time
         print('time_diff:',time_diff)
-        return time_diff <= 3600        
+        return time_diff.total_seconds <= 3600        
     
 
 
@@ -205,6 +205,9 @@ def main_handler(event, context):
     
     
 if __name__ == '__main__':
-    result_model.total_func()
+    print('')
+    # result_model.total_func()
     # notification_Model.notificationWeChatToken(notification_Model,'正在进行测试22', '在此关系图中，\n\n您可以看到刚刚创建的工作流程文件，以及 GitHub Actions 组件在层次结构中的组织方式。 每个步骤执行单个操作或 shell 脚本。 步骤 1 和 2 运行操作，步骤 3 和 4 运行 shell 脚本。 若要为工作流查找更多预生成的操作，')
     # notification_Model.notificationWeChatToken('1', '2', '2')
+
+result_model.total_func()
