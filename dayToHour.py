@@ -179,24 +179,24 @@ class result_model:
     def total_func():
         arrOne = []
         arrOne = fuliba().netWork()
-        # arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
+        arr_uuids = ['1574156384091320', '3483683111318823', '2946346894759319', '53218623894222','1139531179102392','1063982986187486','3298190611978526']
         
-        # arrSecond = []
-        # for item in arr_uuids:
-        #     arrThird = juejin().loadData(item)
-        #     arrSecond.extend(arrThird)
-        #     time.sleep(10)
-        # title = '文章更新汇总'
+        arrSecond = []
+        for item in arr_uuids:
+            arrThird = juejin().loadData(item)
+            arrSecond.extend(arrThird)
+            time.sleep(10)
+        title = '文章更新汇总'
         
-        # if len(arrOne) == 0:
-        #     title = '知乎文章更新'
-        # if len(arrSecond) == 0:
-        #     title = '掘金文章更新'
-        # arrLast = arrOne+arrSecond
-        # content = '\n'.join(arrLast)
+        if len(arrOne) == 0:
+            title = '知乎文章更新'
+        if len(arrSecond) == 0:
+            title = '掘金文章更新'
+        arrLast = arrOne+arrSecond
+        content = '\n'.join(arrLast)
 
-        # if len(arrLast) != 0:
-        #     notification_Model.notificationWeChatToken(notification_Model, title, content)
+        if len(arrLast) != 0:
+            notification_Model.notificationWeChatToken(notification_Model, title, content)
             
              
 
