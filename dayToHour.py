@@ -124,7 +124,7 @@ class juejin:
         respose = s.post(url=urlValueJueJin,headers=headers,data=json.dumps(data))
         resultData = respose.json()
         
-        print('resultData:', resultData)
+        # print('resultData:', resultData)
         
         arrContent = []
         if resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
@@ -162,8 +162,8 @@ class juejin:
         secondsTime = (stand_secondsTime - hoursTime * 3600 - minsTime * 60);
         # print(old_time, '----->',stand_daysTime, '---',stand_secondsTime, '---',hoursTime, '---',minsTime, '---',secondsTime)
         # print(old_time, '----->', stand_secondsTime, '----->', stand_daysTime)
+        print(timeString,'-------',totleTime.total_seconds())
         if stand_secondsTime <= 3600 and stand_daysTime == 0:
-            # print('--------->')
             return True
         else:
             return False
@@ -185,20 +185,19 @@ class result_model:
         for item in arr_uuids:
             arrThird = juejin().loadData(item)
             arrSecond.extend(arrThird)
-            time.sleep(10)
+            time.sleep(2)
         title = '文章更新汇总'
         
         if len(arrOne) == 0:
-            title = '知乎文章更新'
-        if len(arrSecond) == 0:
             title = '掘金文章更新'
+        if len(arrSecond) == 0:
+            title = '知乎文章更新'
         arrLast = arrOne+arrSecond
         content = '\n'.join(arrLast)
 
         if len(arrLast) != 0:
             notification_Model.notificationWeChatToken(notification_Model, title, content)
-        else:
-            notification_Model.notificationWeChatToken(notification_Model, '无更新', '无更新')
+        
             
              
 

@@ -3,7 +3,7 @@ name: day Python Script
 
 on:
   schedule:
-    - cron: '32 6 * * *'  
+    - cron: '32 22 * * *'  
     # 每天 6 点执行
     # - cron: '*/5 * * * *'  
     # 每5分钟执行一次
