@@ -155,15 +155,8 @@ class juejin:
         old_time = datetime.fromtimestamp(float(timeString), py)
         now_time = datetime.now(py)
         totleTime = (now_time - old_time)
-        stand_daysTime = totleTime.days
-        stand_secondsTime = totleTime.seconds
-        hoursTime = int(stand_secondsTime / 3600)
-        minsTime = int((stand_secondsTime - hoursTime * 3600) / 60);
-        secondsTime = (stand_secondsTime - hoursTime * 3600 - minsTime * 60);
-        # print(old_time, '----->',stand_daysTime, '---',stand_secondsTime, '---',hoursTime, '---',minsTime, '---',secondsTime)
-        # print(old_time, '----->', stand_secondsTime, '----->', stand_daysTime)
         print(timeString,'-------',totleTime.total_seconds())
-        if stand_secondsTime <= 3600 and stand_daysTime == 0:
+        if totleTime.total_seconds() <= 3600:
             return True
         else:
             return False
