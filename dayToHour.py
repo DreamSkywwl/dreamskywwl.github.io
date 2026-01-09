@@ -141,7 +141,7 @@ class juejin:
         old_time = datetime.fromtimestamp(float(timeString), py)
         now_time = datetime.now(py)
         totleTime = (now_time - old_time)
-        print(timeString,'-------',totleTime.total_seconds())
+        print("timeString:{}--old_time:{}--total_seconds:{}".format(timeString,old_time,totleTime.total_seconds()))
         if totleTime.total_seconds() <= 3600:
             return True
         else:
