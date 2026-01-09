@@ -17,17 +17,12 @@ import pytz
 class notification_Model:
     def notificationWeChatToken(self,titleMsg, message):
         url = "https://push.showdoc.com.cn/server/api/push/303b94dcc4ac08927ccbce0e72ad9fec430211407"
-        # nowTmp = message
-        # if len(regueURL) != 0:
-        #     third = quote(regueURL, 'utf-8')
-        #     nowTmp = nowTmp + '\n<br /> url:' + third
+        
         payload = {
             "title": titleMsg,
             "content": message,
             "user_token": "12307831fb70e549bb4d5af466858b64839451758"
         }
-
-        # print('payload:', payload)
 
         headers = {
             "accept": "application/json, text/plain, */*",
@@ -46,8 +41,7 @@ class notification_Model:
         notification_Model().notificationWeChatToken2(titleMsg)
         print(response.text)
     
-    def notificationWeChatToken2(self,titleMsg, ):
-        
+    def notificationWeChatToken2(self,titleMsg):
         url = "https://api.letserver.run/message/info?token=cq0mkh8jn87bju92b0ag&msg=" + titleMsg
         headers = {
             "Content-Type": "application/x-www-form-urlencoded"
@@ -68,15 +62,11 @@ class fuliba:
         for entry in feed['entries']:
             # print(entry.keys())
             oneTime = entry['published']
-            print(entry['published'] + '------' + entry['title'] + '------' + entry['link'])
             if self.transformTime(oneTime):
-                print('1111111111111111')
-                arrContent.append(entry['title'] + '-----:' + entry['link'])
-                # notification_Model.notificationWeChatToken2(self=self,titleMsg=entry['title'],message='查看详情', regueURL=entry['link'])
+                arrContent.append(entry['title'] + '-----: ' + entry['link'])
             else:
-                print('2222222222222222')
+                print(entry['title'] + ' -----:' + entry['link'] + ' -----' + oneTime)
 
-        print('arrContent:', arrContent)
         return arrContent
 
     def transformTime(self,oneTime):
@@ -91,14 +81,14 @@ class fuliba:
         
         # 计算时间差
         time_diff = now - target_time
-        print('time_diff:',time_diff)
+        # print('time_diff:',time_diff,sep='--------')
+        print("time_diff:{} | target_time:{} | now:{}".format(time_diff.total_seconds(),target_time,now))
         return time_diff.total_seconds() <= 3600        
     
 
 
 class juejin:
     def loadData(self,uuid):
-        
         urlValueJueJin ='https://api.juejin.cn/content_api/v1/article/query_list?aid=2608&uuid=7351316729601197608&spider=0'
         headers = {
             'accept':'*/*',
@@ -129,24 +119,20 @@ class juejin:
         arrContent = []
         if resultData['err_no'] == 0 and resultData['err_msg'] == 'success':
             firstData = resultData['data']
-            # print(firstData)
             for item in firstData:
                 itemID = item['article_id']
                 titleValue = item['article_info']['title']
                 brief_content = item['article_info']['brief_content']
                 cover_image = item['article_info']['cover_image']
                 ctime = item['article_info']['mtime']
-                # print(self.transformTime2(item['article_info']['mtime']),'---',self.transformTime2(item['article_info']['ctime']))
+                
                 if ctime == None:
                     ctime = item['article_info']['ctime']
                 createTime = self.transformTime(ctime)
                 
                 if createTime:
-                    # print(titleValue)
                   arrContent.append(titleValue + '-----:' + 'https://juejin.cn/post/' + str(itemID))
-                    # notification_Model.notificationWeChatToken2(self=self,titleMsg=titleValue, message='查看详情',regueURL='https://juejin.cn/post/' + str(itemID))
-        
-            # notification_Model.notificationWeChatToken2(self=self,titleMsg='掘金', message=resultData['err_msg'], regueURL="")
+                    
         
         return arrContent
 
@@ -160,11 +146,6 @@ class juejin:
             return True
         else:
             return False
-    
-    def transformTime2(self,timeString):
-        py = pytz.timezone('Asia/Shanghai')
-        old_time = datetime.fromtimestamp(float(timeString), py)
-        return old_time
 
         
 

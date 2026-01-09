@@ -3,7 +3,8 @@ name: Hourly Python Script
 
 on:
   schedule:
-    - cron: '0 */59 * * *'  # 每小时执行一次
+    - cron: '*/50 * * * *' 
+    # - cron: '0 * * * *'  # 每小时执行一次
 
 jobs:
   run-python:
