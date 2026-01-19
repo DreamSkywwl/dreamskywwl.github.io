@@ -1,0 +1,284 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导航页面</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/tailwindcss/2.2.19/tailwind.min.css" type="text/css" rel="stylesheet" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-image: url('https://pic3.zhimg.com/v2-d1f733345b0d11ea4d1bde0e2511dbc8_720w.jpg?source=172ae18b');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .frosted-glass {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .nav-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .nav-button:active {
+            transform: translateY(0);
+        }
+        
+        .group-title {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .group-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 60%;
+            background: linear-gradient(to bottom, #60a5fa, #3b82f6);
+            border-radius: 2px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-12">
+        <div class="frosted-glass rounded-2xl shadow-2xl p-8 max-w-6xl mx-auto">
+            <header class="text-center mb-12 fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                    <i class="fas fa-compass mr-3"></i>导航页面
+                </h1>
+                
+            </header>
+            
+            <!-- 第一组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.1s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-search mr-2 text-blue-300"></i>搜索引擎
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://www.google.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-google text-2xl mb-2"></i>
+                        <span>Google</span>
+                    </a>
+                    <a href="https://www.baidu.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-baidu text-2xl mb-2"></i>
+                        <span>百度</span>
+                    </a>
+                    <a href="https://www.bing.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                         <i class="fab fa-microsoft text-2xl mb-2"></i>
+                        <span>Bing</span>
+                    </a>
+                    <a href="https://duckduckgo.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-feather-alt text-2xl mb-2"></i>
+                        <span>DuckDuckGo</span>
+                    </a>
+                    <a href="https://yandex.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-globe-europe text-2xl mb-2"></i>
+                        <span>Yandex</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第二组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.2s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-video mr-2 text-red-300"></i>视频娱乐
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://www.youtube.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-youtube text-2xl mb-2"></i>
+                        <span>YouTube</span>
+                    </a>
+                    <a href="https://www.bilibili.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-play-circle text-2xl mb-2"></i>
+                        <span>哔哩哔哩</span>
+                    </a>
+                    <a href="https://v.qq.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-film text-2xl mb-2"></i>
+                        <span>腾讯视频</span>
+                    </a>
+                    <a href="https://www.iqiyi.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-tv text-2xl mb-2"></i>
+                        <span>爱奇艺</span>
+                    </a>
+                    <a href="https://www.netflix.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-netflix text-2xl mb-2"></i>
+                        <span>Netflix</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第三组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.3s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-shopping-cart mr-2 text-green-300"></i>购物平台
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://www.taobao.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-opencart text-2xl mb-2"></i>
+                        <span>淘宝</span>
+                    </a>
+                    <a href="https://www.jd.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-box-open text-2xl mb-2"></i>
+                        <span>京东</span>
+                    </a>
+                    <a href="https://www.amazon.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-amazon text-2xl mb-2"></i>
+                        <span>Amazon</span>
+                    </a>
+                    <a href="https://www.tmall.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-store text-2xl mb-2"></i>
+                        <span>天猫</span>
+                    </a>
+                    <a href="https://www.pinduoduo.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-users text-2xl mb-2"></i>
+                        <span>拼多多</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第四组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.4s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-envelope mr-2 text-purple-300"></i>社交通讯
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://www.weibo.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-weibo text-2xl mb-2"></i>
+                        <span>微博</span>
+                    </a>
+                    <a href="https://www.zhihu.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-readme text-2xl mb-2"></i>
+                        <span>知乎</span>
+                    </a>
+                    <a href="https://www.douban.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-bookmark text-2xl mb-2"></i>
+                        <span>豆瓣</span>
+                    </a>
+                    <a href="https://www.linkedin.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-linkedin text-2xl mb-2"></i>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://www.reddit.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-reddit text-2xl mb-2"></i>
+                        <span>Reddit</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第五组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.5s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-laptop-code mr-2 text-yellow-300"></i>技术开发
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://github.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-github text-2xl mb-2"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://stackoverflow.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fab fa-stack-overflow text-2xl mb-2"></i>
+                        <span>Stack Overflow</span>
+                    </a>
+                    <a href="https://dev.to" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-code text-2xl mb-2"></i>
+                        <span>DEV Community</span>
+                    </a>
+                    <a href="https://www.w3schools.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-graduation-cap text-2xl mb-2"></i>
+                        <span>W3Schools</span>
+                    </a>
+                    <a href="https://leetcode.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-brain text-2xl mb-2"></i>
+                        <span>LeetCode</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第六组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.6s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-graduation-cap mr-2 text-indigo-300"></i>学习教育
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    <a href="https://www.coursera.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-graduation-cap text-2xl mb-2"></i>
+                        <span>Coursera</span>
+                    </a>
+                    <a href="https://www.khanacademy.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-book-open text-2xl mb-2"></i>
+                        <span>Khan Academy</span>
+                    </a>
+                    <a href="https://www.udemy.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-chalkboard-teacher text-2xl mb-2"></i>
+                        <span>Udemy</span>
+                    </a>
+                    <a href="https://www.edx.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-university text-2xl mb-2"></i>
+                        <span>edX</span>
+                    </a>
+                    <a href="https://www.duolingo.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                        <i class="fas fa-language text-2xl mb-2"></i>
+                        <span>Duolingo</span>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- 第七组 -->
+            <div class="button-group mb-10 fade-in" style="animation-delay: 0.7s">
+                <h2 class="group-title text-2xl font-semibold text-white mb-6 pb-2 border-b border-white/20">
+                    <i class="fas fa-music mr-2 text-pink-300"></i>音乐音频
+                </h2>
+              <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  <a href="https://www.coursera.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                      <i class="fas fa-graduation-cap text-2xl mb-2"></i>
+                      <span>Coursera</span>
+                  </a>
+                  <a href="https://www.khanacademy.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                      <i class="fas fa-book-open text-2xl mb-2"></i>
+                      <span>Khan Academy</span>
+                  </a>
+                  <a href="https://www.udemy.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                      <i class="fas fa-chalkboard-teacher text-2xl mb-2"></i>
+                      <span>Udemy</span>
+                  </a>
+                  <a href="https://www.edx.org" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                      <i class="fas fa-university text-2xl mb-2"></i>
+                      <span>edX</span>
+                  </a>
+                  <a href="https://www.duolingo.com" target="_blank" class="nav-button bg-white/20 hover:bg-white/30 rounded-xl p-4 text-white text-center flex flex-col items-center justify-center">
+                      <i class="fas fa-language text-2xl mb-2"></i>
+                      <span>Duolingo</span>
+                  </a>
+              </div>
+          </div>
+          </div></div></body></html>
+               
