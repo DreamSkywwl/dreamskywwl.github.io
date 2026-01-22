@@ -36,16 +36,20 @@
       </div>
       <div class="flex flex-wrap gap-3 justify-center mb-6">
         <button id="extractBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
-          <i class="mr-2"></i> 提取图片链接
+           提取图片链接
         </button>
         <button id="downloadBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center" disabled>
           <i class="mr-2"> 打包下载
         </button>
         <button id="clearBtn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center">
-          <i class="mr-2"></i> 清空内容
+           清空内容
         </button>
         <button id="sampleBtn" class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition flex items-center">
-          <i class="mr-2"></i> 示例数据
+           示例数据
+        </button>
+
+        <button id="seuesBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
+           跳转标签页
         </button>
       </div>
 
@@ -76,6 +80,8 @@
   <script>
     const inputText = document.getElementById('inputText');
     const extractBtn = document.getElementById('extractBtn');
+    
+    const seuesBtn = document.getElementById('seuesBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const clearBtn = document.getElementById('clearBtn');
     const sampleBtn = document.getElementById('sampleBtn');
@@ -160,6 +166,14 @@
         console.error(error);
         alert("解析数组字符串失败，请检查格式是否正确！");
       }
+    });
+
+
+
+    // 提取data-original图片链接
+    seuesBtn.addEventListener('click', () => {
+      window.location.href = "./guide.html";
+
     });
 
     // 渲染链接列表
