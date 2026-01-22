@@ -1,2 +1,2 @@
-pip freeze > requirements.txt
+pip freeze > D:\Code\dreamskyNote\requirements2.txt
 

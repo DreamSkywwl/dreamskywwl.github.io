@@ -56,50 +56,15 @@ class weChat_listening:
 
 
 class notification_Model:
-    # 钉钉机器人的调用
-    def dingdingTalk(self,msg):
-        HEADERS = {"Content-Type": "application/json;charset=utf-8"}
-        key = "e9b59afdcad471cd70b8e4016f2752a03084d66c34abea961f2ebf8a3d785a30"
-        url = "https://oapi.dingtalk.com/robot/send?access_token=%s" % key
-        data_info = {
-            "msgtype": "text",
-            "text": {
-                # "content": "Log: \n" + msg
-                "content": msg
-            },
-            "isAtAll": True
-        }
-
-        value = json.dumps(data_info)
-        response = requests.post(url, data=value, headers=HEADERS)
-
-    def notificationToken(self,titleMsg, message):
-    # tkoen = 'WwuUQD5ZNv7Aq9A67AswCN'#晓粉的
-        tkoen = 'eJYzQEezv5JtJeR6mDQfVG'  # 我的
-        first = urllib.parse.quote(titleMsg, 'utf-8')
-        second = urllib.parse.quote(message, 'utf-8')
-        nowTmp = 'https://api.day.app/{}/{}/{}'.format(tkoen, first, second)
-        print(nowTmp)
-        res = requests.post(nowTmp)
-
-        if res.json()['code'] == 200:
-            print('发送成功')
-        else:
-            print(res.text)
+   
     def notificationWeChatToken(self,titleMsg, message):
         url = "https://push.showdoc.com.cn/server/api/push/303b94dcc4ac08927ccbce0e72ad9fec430211407"
-        # nowTmp = message
-        # if len(regueURL) != 0:
-        #     third = quote(regueURL, 'utf-8')
-        #     nowTmp = nowTmp + '\n<br /> url:' + third
+        
         payload = {
             "title": titleMsg,
             "content": message,
             "user_token": "12307831fb70e549bb4d5af466858b64839451758"
         }
-
-        # print('payload:', payload)
-
         headers = {
             "accept": "application/json, text/plain, */*",
             "accept-language": "zh-CN,zh;q=0.9",
