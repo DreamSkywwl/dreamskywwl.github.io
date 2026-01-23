@@ -1,0 +1,303 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>图片链接提取工具</title>
+  <!-- <link href="https://cdn.bytedance.com/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
+  <link href="https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-y/tailwindcss/2.2.19/tailwind.min.css" type="text/css" rel="stylesheet" />
+  <style>
+    .fade-in {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .progress-bar {
+      transition: width 0.3s ease;
+    }
+    
+    pre {
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+  <div class="container mx-auto px-4 py-10 max-w-4xl">
+    <main class="bg-white p-6 rounded-xl shadow-lg" style="">
+      <div class="mb-6">
+        <label for="inputText" class="block text-gray-700 font-medium mb-2">请输入包含content属性的数组字符串：</label>
+        <textarea id="inputText" rows="6" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono text-sm" placeholder='[{"content": "<img data-original=\"https://example.com/image1.jpg\">"}, {"content": "<img data-original=\"https://example.com/image2.jpg\">"}]'></textarea>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-center mb-6">
+        <button id="extractBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
+           提取图片链接
+        </button>
+        <button id="downloadBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center" disabled>
+          <i class="mr-2"> 打包下载
+        </button>
+        <button id="clearBtn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center">
+           清空内容
+        </button>
+        <button id="sampleBtn" class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition flex items-center">
+           示例数据
+        </button>
+
+        <button id="seuesBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
+           跳转标签页
+        </button>
+      </div>
+
+      <!-- 进度条 -->
+      <div id="progressSection" class="hidden mb-6">
+        <div class="flex justify-between text-sm text-gray-600 mb-1">
+          <span>下载进度</span>
+          <span id="progressText">0%</span>
+        </div>
+        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-green-500 rounded-full progress-bar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div id="resultSection" class="hidden fade-in">
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">提取结果 (<span id="linkCount">0</span> 个链接)：</h2>
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button id="selectAllBtn" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">全选</button>
+          <button id="deselectAllBtn" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">取消全选</button>
+        </div>
+        <ul id="linkList" class="space-y-2 max-h-60 overflow-y-auto" style="width:100%"></ul>
+      </div>
+    </main>
+
+    
+  </div>
+
+  <script>
+    const inputText = document.getElementById('inputText');
+    const extractBtn = document.getElementById('extractBtn');
+    
+    const seuesBtn = document.getElementById('seuesBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const sampleBtn = document.getElementById('sampleBtn');
+    const resultSection = document.getElementById('resultSection');
+    const linkList = document.getElementById('linkList');
+    const linkCount = document.getElementById('linkCount');
+    const progressSection = document.getElementById('progressSection');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const deselectAllBtn = document.getElementById('deselectAllBtn');
+
+    let imageLinks = [];
+
+    // 示例数据
+    sampleBtn.addEventListener('click', () => {
+      const sampleData = [
+        {
+          "id": 1,
+          "content": "<div><img src='thumb1.jpg' data-original='https://picsum.photos/800/600?random=1' alt='风景图片1'><p>描述内容1</p></div>"
+        },
+        {
+          "id": 2,
+          "content": "<div><img src='thumb2.jpg' data-original='https://picsum.photos/800/600?random=2' alt='风景图片2'><img src='thumb3.jpg' data-original='https://picsum.photos/800/600?random=3' alt='风景图片3'></div>"
+        },
+        {
+          "id": 3,
+          "content": "<div><img src='thumb4.jpg' data-original='https://picsum.photos/800/600?random=1' alt='重复图片'>重复链接测试</div>"
+        },
+        {
+          "id": 4,
+          "content": "<div><img src='thumb5.jpg' data-original='https://picsum.photos/800/600?random=4' alt='风景图片4'></div>"
+        }
+      ];
+      inputText.value = JSON.stringify(sampleData, null, 2);
+    });
+
+    // 提取data-original图片链接
+    extractBtn.addEventListener('click', () => {
+      const text = inputText.value;
+      if (!text.trim()) {
+        alert("请输入数组字符串内容！");
+        return;
+      }
+
+      try {
+        // 解析数组字符串
+        const dataArray = JSON.parse(text);
+        
+        // 检查是否为数组
+        if (!Array.isArray(dataArray)) {
+          alert("输入内容必须是一个数组！");
+          return;
+        }
+
+        // 提取所有content属性中的data-original链接
+        const allLinks = [];
+        dataArray.forEach(item => {
+          if (item.content && typeof item.content === 'string') {
+            // 匹配data-original属性中的图片链接 src
+            const dataOriginalRegex = /data-original\s*=\s*["']([^"']+\.(?:jpg|jpeg|png|gif|bmp|webp)(?:\?[^"']*)?)["']/gi;
+            const matches = item.content.matchAll(dataOriginalRegex);
+            for (const match of matches) {
+              allLinks.push(match[1]);
+            }
+          }
+        });
+
+        // 去重
+        imageLinks = [...new Set(allLinks)];
+
+        if (imageLinks.length === 0) {
+          resultSection.classList.add('hidden');
+          alert("未找到任何data-original图片链接！");
+          return;
+        }
+
+        renderLinks();
+        linkCount.textContent = imageLinks.length;
+        downloadBtn.disabled = false;
+      } catch (error) {
+        console.error(error);
+        alert("解析数组字符串失败，请检查格式是否正确！");
+      }
+    });
+
+
+
+    // 提取data-original图片链接
+    seuesBtn.addEventListener('click', () => {
+      window.location.href = "./guide.html";
+
+    });
+
+    // 渲染链接列表
+    function renderLinks() {
+      linkList.innerHTML = '';
+      imageLinks.forEach((link, index) => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center justify-between bg-gray-50 p-3 rounded border';
+        li.innerHTML = `
+          <div class="flex items-center flex-1 min-w-0">
+            <input type="checkbox" class="mr-3 link-checkbox" data-index="${index}" checked>
+            <a href="${link}" target="_blank" class="text-indigo-600 hover:underline truncate">${link}</a>
+          </div>
+          <button class="copy-btn ml-2 px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded whitespace-nowrap" data-link="${link}">
+            复制
+          </button>
+        `;
+        linkList.appendChild(li);
+      });
+
+      resultSection.classList.remove('hidden');
+
+      // 绑定复制按钮事件
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          navigator.clipboard.writeText(btn.dataset.link).then(() => {
+            btn.textContent = '已复制';
+            setTimeout(() => btn.textContent = '复制', 2000);
+          });
+        });
+      });
+
+      // 绑定复选框事件
+      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
+        checkbox.addEventListener('change', updateDownloadButton);
+      });
+
+      updateDownloadButton();
+    }
+
+    // 更新下载按钮状态
+    function updateDownloadButton() {
+      const checkedCount = document.querySelectorAll('.link-checkbox:checked').length;
+      downloadBtn.disabled = checkedCount === 0;
+    }
+
+    // 全选/取消全选
+    selectAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
+        checkbox.checked = true;
+      });
+      updateDownloadButton();
+    });
+
+    deselectAllBtn.addEventListener('click', () => {
+      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
+        checkbox.checked = false;
+      });
+      updateDownloadButton();
+    });
+
+    // 下载打包图片
+    downloadBtn.addEventListener('click', async () => {
+      // 获取选中的链接
+      const selectedLinks = Array.from(document.querySelectorAll('.link-checkbox:checked'))
+        .map(checkbox => imageLinks[parseInt(checkbox.dataset.index)]);
+
+      if (selectedLinks.length === 0) return;
+
+      progressSection.classList.remove('hidden');
+      progressText.textContent = '0%';
+      progressBar.style.width = '0%';
+
+      const zip = new JSZip();
+      const imgFolder = zip.folder("提取的图片");
+
+      try {
+        for (let i = 0; i < selectedLinks.length; i++) {
+          const url = selectedLinks[i];
+          try {
+            const response = await fetch(url);
+            const blob = await response.blob();
+            const filename = url.split('/').pop().split('?')[0] || `image_${i + 1}`;
+            imgFolder.file(filename, blob);
+          } catch (err) {
+            console.error("下载失败:", url);
+          }
+
+          // 更新进度
+          const progress = Math.round(((i + 1) / selectedLinks.length) * 100);
+          progressText.textContent = `${progress}%`;
+          progressBar.style.width = `${progress}%`;
+        }
+
+        const content = await zip.generateAsync({ type: "blob" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(content);
+        
+        link.download = `zhihu图片${new Date().getTime()}.zip`
+        //"提取的data-original图片.zip";
+        link.click();
+
+        // 完成后隐藏进度条
+        setTimeout(() => {
+          progressSection.classList.add('hidden');
+        }, 1000);
+      } catch (error) {
+        console.error("打包下载失败:", error);
+        alert("下载过程中出现错误，请重试");
+        progressSection.classList.add('hidden');
+      }
+    });
+
+    // 清空内容
+    clearBtn.addEventListener('click', () => {
+      inputText.value = '';
+      resultSection.classList.add('hidden');
+      downloadBtn.disabled = true;
+      imageLinks = [];
+      progressSection.classList.add('hidden');
+    });
+  </script>
+
+  <!-- 引入 JSZip 库用于打包下载 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</body>
+</html>
