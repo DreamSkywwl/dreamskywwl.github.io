@@ -29,6 +29,7 @@ let arr = [
 
 
   { title: '解析图片', url: 'https://dreamskywwl.github.io/downloadPic.html', category: '其他' },
+  { title: 'Github', url: 'https://github.com/DreamSkywwl', category: '其他' },
 
 ]
 
@@ -38,7 +39,19 @@ for (let index = 0; index < arr.length; index++) {
   element.id = index + 1
   arrOptions.push(element)
 }
-console.log('arr>-->:', JSON.stringify(arrOptions));
+// console.log('arr>-->:', JSON.stringify(arrOptions));
+
+const fs = require('fs');
+let fileName = 'htmlTag.json'
+// 将数据写入aaa.json文件
+fs.writeFile(fileName, JSON.stringify(arrOptions, null, 2), (err) => {
+  if (err) {
+    console.error('写入文件时出错:', err);
+    return;
+  }
+  console.log(`成功创建${fileName}文件并写入数据`);
+});
+
 /* 
 { title: '', url: '', category: '工具' },
   { title: '', url: '', category: '' },
