@@ -115,55 +115,56 @@
               .then(data => {
                   // 成功获取数据后的处理
                   console.log('data>-->:',JSON.stringify(data));
-              })
-              .catch(error => {
-                  // 错误处理
-                  console.error(`加载数据失败: ${error.message}`);
+                  // 过滤书签
+                  let filtered = data.filter(bookmark => {
+                      const matchesCategory = currentCategory === 'all' || bookmark.category === currentCategory;
+                      const matchesSearch = bookmark.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
+                                          bookmark.url.toLowerCase().includes(currentSearch.toLowerCase());
+                      return matchesCategory && matchesSearch;
+                  });
+
+                  // 显示/隐藏空状态
+                  if (filtered.length === 0) {
+                      bookmarksContainer.innerHTML = '';
+                      emptyState.classList.remove('hidden');
+                      return;
+                  } else {
+                      emptyState.classList.add('hidden');
+                  }
+
+                  // 渲染书签
+                  bookmarksContainer.innerHTML = filtered.map(bookmark => `
+                      <div class="bookmark-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
+                          <div class="p-5">
+                              <div class="flex justify-between items-start mb-3">
+                                  <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
+                                      <i class="fas fa-globe text-indigo-600"></i>
+                                  </div>
+                                  
+                              </div>
+                              <h3 class="font-semibold text-gray-800 mb-2 truncate">${bookmark.title}</h3>
+                              <p class="text-gray-500 text-sm mb-4 truncate">${bookmark.url}</p>
+                              <div class="flex justify-between items-center">
+                                  <span class="category-badge inline-block px-3 py-1 rounded-full text-xs font-medium bg-${getCategoryColor(bookmark.category)}-100 text-${getCategoryColor(bookmark.category)}-800 cursor-pointer transition duration-300">
+                                      ${bookmark.category}
+                                  </span>
+                                  <a href="${bookmark.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center transition duration-300">
+                                      访问 <i class="fas fa-arrow-right ml-1 text-xs"></i>
+                                  </a>
+                              </div>
+                          </div>
+                      </div>
+                  `).join('');
               
-              });
+                    })
+                    .catch(error => {
+                        // 错误处理
+                        console.error(`加载数据失败: ${error.message}`);
+                    
+                    });
 
 
-            // 过滤书签
-            let filtered = bookmarks.filter(bookmark => {
-                const matchesCategory = currentCategory === 'all' || bookmark.category === currentCategory;
-                const matchesSearch = bookmark.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                                    bookmark.url.toLowerCase().includes(currentSearch.toLowerCase());
-                return matchesCategory && matchesSearch;
-            });
-
-            // 显示/隐藏空状态
-            if (filtered.length === 0) {
-                bookmarksContainer.innerHTML = '';
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
-
-            // 渲染书签
-            bookmarksContainer.innerHTML = filtered.map(bookmark => `
-                <div class="bookmark-card bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
-                    <div class="p-5">
-                        <div class="flex justify-between items-start mb-3">
-                            <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center">
-                                <i class="fas fa-globe text-indigo-600"></i>
-                            </div>
-                            
-                        </div>
-                        <h3 class="font-semibold text-gray-800 mb-2 truncate">${bookmark.title}</h3>
-                        <p class="text-gray-500 text-sm mb-4 truncate">${bookmark.url}</p>
-                        <div class="flex justify-between items-center">
-                            <span class="category-badge inline-block px-3 py-1 rounded-full text-xs font-medium bg-${getCategoryColor(bookmark.category)}-100 text-${getCategoryColor(bookmark.category)}-800 cursor-pointer transition duration-300">
-                                ${bookmark.category}
-                            </span>
-                            <a href="${bookmark.url}" target="_blank" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center transition duration-300">
-                                访问 <i class="fas fa-arrow-right ml-1 text-xs"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        
+            
           }
 
         // 获取分类颜色
