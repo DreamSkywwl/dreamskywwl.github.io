@@ -1,0 +1,134 @@
+[
+  {
+    "title": "公司官网",
+    "url": "https://office.inspur.com/",
+    "category": "work",
+    "id": 1
+  },
+  {
+    "title": "工时登记",
+    "url": "https://devops.inspur.com/",
+    "category": "work",
+    "id": 2
+  },
+  {
+    "title": "百度搜索",
+    "url": "https://www.baidu.com/",
+    "category": "dev",
+    "id": 3
+  },
+  {
+    "title": "百度翻译",
+    "url": "https://fanyi.baidu.com/mtpe-individual/transText#/",
+    "category": "dev",
+    "id": 4
+  },
+  {
+    "title": "百度文心助手",
+    "url": "https://chat.baidu.com/search?isShowHello=1&extParams=%7B%22out_enter_type%22%3A%22home_aiinput_askai%22%2C%22enter_type%22%3A%22sidebar_dialog%22%7D",
+    "category": "dev",
+    "id": 5
+  },
+  {
+    "title": "必应搜索",
+    "url": "https://cn.bing.com/",
+    "category": "dev",
+    "id": 6
+  },
+  {
+    "title": "百度地图",
+    "url": "https://map.baidu.com/",
+    "category": "dev",
+    "id": 7
+  },
+  {
+    "title": "豆包AI",
+    "url": "https://www.doubao.com/chat/",
+    "category": "dev",
+    "id": 8
+  },
+  {
+    "title": "JSON在线",
+    "url": "https://www.bejson.com/jsoneditoronline/",
+    "category": "dev",
+    "id": 9
+  },
+  {
+    "title": "随机密码",
+    "url": "https://suijimimashengcheng.bmcx.com/",
+    "category": "dev",
+    "id": 10
+  },
+  {
+    "title": "调色板",
+    "url": "https://www.bejson.com/ui/getcolor/",
+    "category": "dev",
+    "id": 11
+  },
+  {
+    "title": "草料二维码",
+    "url": "https://cli.im/",
+    "category": "dev",
+    "id": 12
+  },
+  {
+    "title": "阿里life",
+    "url": "https://www.aliyundrive.com/drive/home",
+    "category": "life",
+    "id": 13
+  },
+  {
+    "title": "百度life",
+    "url": "https://pan.baidu.com/disk/main#/index?category=all",
+    "category": "life",
+    "id": 14
+  },
+  {
+    "title": "夸克life",
+    "url": "https://pan.quark.cn/list#/list/all",
+    "category": "life",
+    "id": 15
+  },
+  {
+    "title": "知乎",
+    "url": "https://www.zhihu.com/",
+    "category": "study",
+    "id": 16
+  },
+  {
+    "title": "掘金",
+    "url": "https://juejin.cn/",
+    "category": "study",
+    "id": 17
+  },
+  {
+    "title": "HelloGithub",
+    "url": "https://hellogithub.com/",
+    "category": "study",
+    "id": 18
+  },
+  {
+    "title": "山东联通",
+    "url": "https://www.10010.com/wt_service_web/index.html#/",
+    "category": "study",
+    "id": 19
+  },
+  {
+    "title": "uniapp",
+    "url": "https://uniapp.dcloud.net.cn/",
+    "category": "study",
+    "id": 20
+  },
+  {
+    "title": "解析图片",
+    "url": "https://dreamskywwl.github.io/downloadPic.html",
+    "category": "other",
+    "id": 21
+  },
+  {
+    "title": "Github",
+    "url": "https://github.com/DreamSkywwl",
+    "category": "other",
+    "id": 22
+  }
+]
