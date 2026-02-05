@@ -3,20 +3,20 @@
 let arr = [
   { name: '公司官网', url: 'https://office.inspur.com/', category: 'work' },
   { name: '工时登记', url: 'https://devops.inspur.com/', category: 'work' },
-  { name: '百度搜索', url: 'https://www.baidu.com/', category: 'dev' },
-  { name: '百度翻译', url: 'https://fanyi.baidu.com/mtpe-individual/transText#/', category: 'dev' },
-  { name: '百度文心助手', url: 'https://chat.baidu.com/search?isShowHello=1&extParams=%7B%22out_enter_type%22%3A%22home_aiinput_askai%22%2C%22enter_type%22%3A%22sidebar_dialog%22%7D', category: 'dev' },
+  { name: '百度搜索', url: 'https://www.baidu.com/', category: 'search' },
+  { name: '百度翻译', url: 'https://fanyi.baidu.com/mtpe-individual/transText#/', category: 'search' },
+  { name: '百度文心助手', url: 'https://chat.baidu.com/search?isShowHello=1&extParams=%7B%22out_enter_type%22%3A%22home_aiinput_askai%22%2C%22enter_type%22%3A%22sidebar_dialog%22%7D', category: 'search' },
 
-  { name: '必应搜索', url: 'https://cn.bing.com/', category: 'dev' },
-  { name: '百度地图', url: 'https://map.baidu.com/', category: 'dev' },
-  { name: '豆包AI', url: 'https://www.doubao.com/chat/', category: 'dev' },
+  { name: '必应搜索', url: 'https://cn.bing.com/', category: 'search' },
+  { name: '百度地图', url: 'https://map.baidu.com/', category: 'search' },
+  { name: '豆包AI', url: 'https://www.doubao.com/chat/', category: 'search' },
   { name: 'JSON在线', url: 'https://www.bejson.com/jsoneditoronline/', category: 'dev' },
   { name: '随机密码', url: 'https://suijimimashengcheng.bmcx.com/', category: 'dev' },
   { name: '调色板', url: 'https://www.bejson.com/ui/getcolor/', category: 'dev' },
   { name: '草料二维码', url: 'https://cli.im/', category: 'dev' },
-  { name: '阿里life', url: 'https://www.aliyundrive.com/drive/home', category: 'life' },
-  { name: '百度life', url: 'https://pan.baidu.com/disk/main#/index?category=all', category: 'life' },
-  { name: '夸克life', url: 'https://pan.quark.cn/list#/list/all', category: 'life' },
+  { name: '阿里网盘', url: 'https://www.aliyundrive.com/drive/home', category: 'life' },
+  { name: '百度网盘', url: 'https://pan.baidu.com/disk/main#/index?category=all', category: 'life' },
+  { name: '夸克网盘', url: 'https://pan.quark.cn/list#/list/all', category: 'life' },
 
 
 
