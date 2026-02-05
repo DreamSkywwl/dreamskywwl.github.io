@@ -14,37 +14,37 @@
   {
     "name": "百度搜索",
     "url": "https://www.baidu.com/",
-    "category": "dev",
+    "category": "search",
     "id": 3
   },
   {
     "name": "百度翻译",
     "url": "https://fanyi.baidu.com/mtpe-individual/transText#/",
-    "category": "dev",
+    "category": "search",
     "id": 4
   },
   {
     "name": "百度文心助手",
     "url": "https://chat.baidu.com/search?isShowHello=1&extParams=%7B%22out_enter_type%22%3A%22home_aiinput_askai%22%2C%22enter_type%22%3A%22sidebar_dialog%22%7D",
-    "category": "dev",
+    "category": "search",
     "id": 5
   },
   {
     "name": "必应搜索",
     "url": "https://cn.bing.com/",
-    "category": "dev",
+    "category": "search",
     "id": 6
   },
   {
     "name": "百度地图",
     "url": "https://map.baidu.com/",
-    "category": "dev",
+    "category": "search",
     "id": 7
   },
   {
     "name": "豆包AI",
     "url": "https://www.doubao.com/chat/",
-    "category": "dev",
+    "category": "search",
     "id": 8
   },
   {
@@ -72,19 +72,19 @@
     "id": 12
   },
   {
-    "name": "阿里life",
+    "name": "阿里网盘",
     "url": "https://www.aliyundrive.com/drive/home",
     "category": "life",
     "id": 13
   },
   {
-    "name": "百度life",
+    "name": "百度网盘",
     "url": "https://pan.baidu.com/disk/main#/index?category=all",
     "category": "life",
     "id": 14
   },
   {
-    "name": "夸克life",
+    "name": "夸克网盘",
     "url": "https://pan.quark.cn/list#/list/all",
     "category": "life",
     "id": 15
