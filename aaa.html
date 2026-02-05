@@ -539,19 +539,12 @@
           .then(data => {
             // 成功获取数据后的处理
             console.log('data>-->:', JSON.stringify(data))
-            // 过滤书签
-            /* let filtered = data.filter(bookmark => {
-              const matchesCategory =
-                currentCategory === 'all' || bookmark.category === currentCategory
-              const matchesSearch =
-                bookmark.title.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                bookmark.url.toLowerCase().includes(currentSearch.toLowerCase())
-              return matchesCategory && matchesSearch
-            }) */
+            
             navData = {
               categories:DEFAULT_DATA.categories,
               links: data
             }
+            console.log('navData>-->:', JSON.stringify(navData))
             // 验证数据结构完整性
             validateDataStructure()
           })
@@ -607,6 +600,8 @@
         // 确保每个分类和链接都有必要的字段
         navData.categories = navData.categories.filter(c => c.key && c.name)
         navData.links = navData.links.filter(l => l.id && l.name && l.url && l.category)
+
+        console.log('navData2>-->:',JSON.stringify(navData));
       }
 
       // ===================== 页面渲染 =====================
@@ -617,6 +612,7 @@
         // 1. 读取本地存储数据
         if (window.location.protocol === 'file:') {
           navData = JSON.parse(JSON.stringify(DEFAULT_DATA))
+          validateDataStructure()
         } else {
           loadFromLocalStorage()
         }
