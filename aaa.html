@@ -19,8 +19,7 @@
 
       /* 背景图 + 磨砂效果核心样式 */
       body {
-        background: url('./aaa.png')
-          no-repeat center center fixed;
+        background: url('./aaa.png') no-repeat center center fixed;
         background-size: cover;
         color: #333;
         line-height: 1.6;
@@ -539,14 +538,25 @@
           .then(data => {
             // 成功获取数据后的处理
             console.log('data>-->:', JSON.stringify(data))
-            
+
             navData = {
-              categories:DEFAULT_DATA.categories,
-              links: data
+              categories: DEFAULT_DATA.categories,
+              links: data,
             }
             console.log('navData>-->:', JSON.stringify(navData))
             // 验证数据结构完整性
             validateDataStructure()
+            // 2. 渲染分类标签栏
+            renderCategoryTabs()
+
+            // 3. 渲染导航内容（默认显示全部）
+            renderNavContent('all')
+
+            // 4. 绑定所有交互事件
+            bindEvents()
+
+            // 5. 检查空状态
+            checkEmptyState()
           })
           .catch(error => {
             // 错误处理
@@ -601,7 +611,7 @@
         navData.categories = navData.categories.filter(c => c.key && c.name)
         navData.links = navData.links.filter(l => l.id && l.name && l.url && l.category)
 
-        console.log('navData2>-->:',JSON.stringify(navData));
+        console.log('navData2>-->:', JSON.stringify(navData))
       }
 
       // ===================== 页面渲染 =====================
@@ -613,23 +623,20 @@
         if (window.location.protocol === 'file:') {
           navData = JSON.parse(JSON.stringify(DEFAULT_DATA))
           validateDataStructure()
+          // 2. 渲染分类标签栏
+          renderCategoryTabs()
+
+          // 3. 渲染导航内容（默认显示全部）
+          renderNavContent('all')
+
+          // 4. 绑定所有交互事件
+          bindEvents()
+
+          // 5. 检查空状态
+          checkEmptyState()
         } else {
           loadFromLocalStorage()
         }
-        
-        
-
-        // 2. 渲染分类标签栏
-        renderCategoryTabs()
-
-        // 3. 渲染导航内容（默认显示全部）
-        renderNavContent('all')
-
-        // 4. 绑定所有交互事件
-        bindEvents()
-
-        // 5. 检查空状态
-        checkEmptyState()
       }
 
       /**
