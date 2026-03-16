@@ -14,9 +14,11 @@ let arr = [
   { name: '随机密码', url: 'https://suijimimashengcheng.bmcx.com/', category: 'dev' },
   { name: '调色板', url: 'https://www.bejson.com/ui/getcolor/', category: 'dev' },
   { name: '草料二维码', url: 'https://cli.im/', category: 'dev' },
+
   { name: '阿里网盘', url: 'https://www.aliyundrive.com/drive/home', category: 'life' },
   { name: '百度网盘', url: 'https://pan.baidu.com/disk/main#/index?category=all', category: 'life' },
   { name: '夸克网盘', url: 'https://pan.quark.cn/list#/list/all', category: 'life' },
+  { name: '天气预报', url: 'https://tianqi.moji.com/', category: 'life' },
 
 
 

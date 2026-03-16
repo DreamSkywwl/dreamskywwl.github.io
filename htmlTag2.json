@@ -90,45 +90,51 @@
     "id": 15
   },
   {
+    "name": "天气预报",
+    "url": "https://tianqi.moji.com/",
+    "category": "life",
+    "id": 16
+  },
+  {
     "name": "知乎",
     "url": "https://www.zhihu.com/",
     "category": "study",
-    "id": 16
+    "id": 17
   },
   {
     "name": "掘金",
     "url": "https://juejin.cn/",
     "category": "study",
-    "id": 17
+    "id": 18
   },
   {
     "name": "HelloGithub",
     "url": "https://hellogithub.com/",
     "category": "study",
-    "id": 18
+    "id": 19
   },
   {
     "name": "山东联通",
     "url": "https://www.10010.com/wt_service_web/index.html#/",
     "category": "study",
-    "id": 19
+    "id": 20
   },
   {
     "name": "uniapp",
     "url": "https://uniapp.dcloud.net.cn/",
     "category": "study",
-    "id": 20
+    "id": 21
   },
   {
     "name": "解析图片",
     "url": "https://dreamskywwl.github.io/downloadPic.html",
     "category": "other",
-    "id": 21
+    "id": 22
   },
   {
     "name": "Github",
     "url": "https://github.com/DreamSkywwl",
     "category": "other",
-    "id": 22
+    "id": 23
   }
 ]
