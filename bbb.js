@@ -32,6 +32,8 @@ let arr = [
 
 
   { name: '解析图片', url: 'https://dreamskywwl.github.io/downloadPic.html', category: 'other' },
+  { name: 'Python_Code', url: 'https://dreamskywwl.github.io/python.html', category: 'other' },
+  { name: '常用工具', url: 'https://dreamskywwl.github.io/copyContent.html', category: 'other' },
   { name: 'Github', url: 'https://github.com/DreamSkywwl', category: 'other' },
 
 ]

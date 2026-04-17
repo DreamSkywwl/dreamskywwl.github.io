@@ -1,0 +1,357 @@
+
+<!-- 
+根据以下内容生成html 
+1、生成一个时间戳，旁边一个可以触发复制功能的按钮,不需要实时刷新
+2、生成时间字符串，按照YYYYMMDDHHmmss格式，旁边一个可以触发复制功能的按钮，不需要实时刷新
+3、随机生成12位密码，使用字符可以包括为a~z、A~Z、0~9，可输入排除字符
+4、一个可以刷新以上功能的按钮
+5、
+限制：
+1、不能使用tailwindcss，
+2、link使用国内镜像
+3、不使用图标
+4、禁止使用商业字体
+ -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具箱</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --primary-hover: #357abd;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-secondary: #666666;
+            --border-color: #e1e4e8;
+            --success-color: #28a745;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* padding: 20px; */
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .content {
+            padding: 20px;
+        }
+
+        .tool-section {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tool-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .output-display {
+            flex-grow: 1;
+            background-color: #f8f9fa;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: var(--text-main);
+            word-break: break-all;
+            min-height: 42px;
+            display: flex;
+            align-items: center;
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.2s, transform 0.1s;
+            outline: none;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-copy {
+            background-color: #e2e6ea;
+            color: var(--text-main);
+            padding: 10px 15px;
+            white-space: nowrap;
+        }
+
+        .btn-copy:hover {
+            background-color: #dbe0e5;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .password-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .password-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .exclude-input {
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .exclude-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @media (max-width: 480px) {
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn-copy {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- <header>
+        <h1>开发小工具</h1>
+    </header> -->
+    
+    <div class="content">
+        <!-- 时间戳部分 -->
+        <div class="tool-section">
+            <div class="section-title">Unix 时间戳 (秒)</div>
+            <div class="input-group">
+                <div id="timestampDisplay" class="output-display">--</div>
+                <button class="btn-copy" onclick="copyText('timestampDisplay')">复制</button>
+            </div>
+        </div>
+
+        <!-- 格式化时间部分 -->
+        <div class="tool-section">
+            <div class="section-title">格式化时间 (YYYYMMDDHHmmss)</div>
+            <div class="input-group">
+                <div id="formattedTimeDisplay" class="output-display">--</div>
+                <button class="btn-copy" onclick="copyText('formattedTimeDisplay')">复制</button>
+            </div>
+        </div>
+
+        <!-- 密码生成部分 -->
+        <div class="tool-section">
+            <div class="section-title">随机密码生成 (12位)</div>
+            <div class="password-controls">
+                <div class="password-input-row">
+                    <input type="text" id="excludeChars" class="exclude-input" placeholder="输入要排除的字符 (如: 0O1l)" oninput="generatePassword()">
+                </div>
+                <div class="input-group">
+                    <div id="passwordDisplay" class="output-display">--</div>
+                    <button class="btn-copy" onclick="copyText('passwordDisplay')">复制</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 全局刷新按钮 -->
+        <button class="btn-primary" onclick="refreshAll()">刷新所有数据</button>
+    </div>
+</div>
+
+<div id="toast" class="toast">已复制到剪贴板</div>
+
+<script>
+    // 工具函数：补零
+    function padZero(num) {
+        return num < 10 ? '0' + num : num;
+    }
+
+    // 1. 生成 Unix 时间戳
+    function getUnixTimestamp() {
+        return Math.floor(Date.now() / 1000).toString();
+    }
+
+    // 2. 生成格式化时间字符串 YYYYMMDDHHmmss
+    function getFormattedTimeString() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = padZero(now.getMonth() + 1);
+        const day = padZero(now.getDate());
+        const hours = padZero(now.getHours());
+        const minutes = padZero(now.getMinutes());
+        const seconds = padZero(now.getSeconds());
+        return `${year}${month}${day}${hours}${minutes}${seconds}`;
+    }
+
+    // 3. 生成随机密码
+    function generateRandomPassword(length = 12, excludeStr = '') {
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let availableChars = chars;
+        
+        // 处理排除字符
+        if (excludeStr) {
+            for (let char of excludeStr) {
+                availableChars = availableChars.split(char).join('');
+            }
+        }
+
+        if (availableChars.length === 0) {
+            return '错误: 无可用字符';
+        }
+
+        let password = '';
+        for (let i = 0; i < length; i++) {
+            const randomIndex = Math.floor(Math.random() * availableChars.length);
+            password += availableChars[randomIndex];
+        }
+        return password;
+    }
+
+    // 更新界面显示
+    function updateUI() {
+        document.getElementById('timestampDisplay').textContent = getUnixTimestamp();
+        document.getElementById('formattedTimeDisplay').textContent = getFormattedTimeString();
+        generatePassword();
+    }
+
+    // 单独生成密码（用于输入框变化时）
+    function generatePassword() {
+        const excludeStr = document.getElementById('excludeChars').value;
+        const password = generateRandomPassword(12, excludeStr);
+        document.getElementById('passwordDisplay').textContent = password;
+    }
+
+    // 刷新所有
+    function refreshAll() {
+        updateUI();
+    }
+
+    // 复制功能
+    function copyText(elementId) {
+        const text = document.getElementById(elementId).textContent;
+        if (!text || text === '--' || text.startsWith('错误')) {
+            return;
+        }
+
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('复制成功');
+        }).catch(err => {
+            console.error('复制失败:', err);
+            showToast('复制失败');
+        });
+    }
+
+    // 显示提示 toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    // 页面加载时初始化
+    window.addEventListener('DOMContentLoaded', () => {
+        updateUI();
+    });
+</script>
+
+</body>
+</html>

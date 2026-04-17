@@ -132,9 +132,21 @@
     "id": 22
   },
   {
+    "name": "Python_Code",
+    "url": "https://dreamskywwl.github.io/python.html",
+    "category": "other",
+    "id": 23
+  },
+  {
+    "name": "常用工具",
+    "url": "https://dreamskywwl.github.io/copyContent.html",
+    "category": "other",
+    "id": 24
+  },
+  {
     "name": "Github",
     "url": "https://github.com/DreamSkywwl",
     "category": "other",
-    "id": 23
+    "id": 25
   }
 ]
