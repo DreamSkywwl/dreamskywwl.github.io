@@ -112,8 +112,6 @@
   </head>
   <body>
     <div class="container">
-     
-
       <!-- 1. 时间戳生成器 -->
       <div class="tool-card">
         <h4>当前时间戳 (Unix Timestamp)</h4>
@@ -144,7 +142,6 @@
           </div>
           <div class="col-md-2 col-sm-12">
             <div class="btn-group-custom">
-              
               <button
                 class="btn btn-outline-secondary flex-fill"
                 onclick="copyToClipboard('formatted-time-display')"
@@ -264,29 +261,29 @@
         refreshFormattedTime()
         refreshPassword()
       }
+      function refresh(elementId) {
+        switch (elementId) {
+          case 'timestamp-display':
+            refreshTimestamp()
+            break
+          case 'password-display':
+            refreshPassword()
+            break
+          case 'formatted-time-display':
+            refreshFormattedTime()
+            break
 
+          default:
+            break
+        }
+      }
       // 复制功能
       function copyToClipboard(elementId) {
         const text = document.getElementById(elementId).innerText
         if (text === 'Loading...' || text.startsWith('错误')) {
           return
         }
-        function refresh(elementId) {
-          switch (elementId) {
-            case 'timestamp-display':
-              refreshTimestamp()
-              break
-            case 'password-display':
-              refreshPassword()
-              break
-            case 'formatted-time-display':
-              refreshFormattedTime()
-              break
 
-            default:
-              break
-          }
-        }
         navigator.clipboard
           .writeText(text)
           .then(() => {
