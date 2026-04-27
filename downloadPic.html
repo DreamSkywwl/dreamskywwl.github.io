@@ -1,295 +1,667 @@
-
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>图片链接提取工具</title>
-  <!-- <link href="https://cdn.bytedance.com/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> -->
-  <link href="./npm/tailwind@2.2.19.min.css" type="text/css" rel="stylesheet" />
-  <style>
-    .fade-in {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
-    .progress-bar {
-      transition: width 0.3s ease;
-    }
-    
-    pre {
-      white-space: pre-wrap;
-      word-break: break-all;
-    }
-  </style>
-</head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-  <div class="container mx-auto px-4 py-10 max-w-4xl">
-    <main class="bg-white p-6 rounded-xl shadow-lg" style="">
-      <div class="mb-6">
-        <label for="inputText" class="block text-gray-700 font-medium mb-2">请输入包含content属性的数组字符串：</label>
-        <textarea id="inputText" rows="6" class="w-full border border-gray-300 rounded-lg p-4 focus:ring-2 focus:ring-indigo-500 focus:outline-none font-mono text-sm" placeholder='[{"content": "<img data-original=\"https://example.com/image1.jpg\">"}, {"content": "<img data-original=\"https://example.com/image2.jpg\">"}]'></textarea>
-      </div>
-      <div class="flex flex-wrap gap-3 justify-center mb-6">
-        <button id="extractBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center">
-           提取图片链接
-        </button>
-        <button id="downloadBtn" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition flex items-center" disabled>
-          <i class="mr-2"> 打包下载
-        </button>
-        <button id="clearBtn" class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition flex items-center">
-           清空内容
-        </button>
-        <button id="sampleBtn" class="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition flex items-center">
-           示例数据
-        </button>
-
-       
-      </div>
-
-      <!-- 进度条 -->
-      <div id="progressSection" class="hidden mb-6">
-        <div class="flex justify-between text-sm text-gray-600 mb-1">
-          <span>下载进度</span>
-          <span id="progressText">0%</span>
-        </div>
-        <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div id="progressBar" class="h-full bg-green-500 rounded-full progress-bar" style="width: 0%"></div>
-        </div>
-      </div>
-
-      <div id="resultSection" class="hidden fade-in">
-        <h2 class="text-xl font-semibold text-gray-800 mb-4">提取结果 (<span id="linkCount">0</span> 个链接)：</h2>
-        <div class="flex flex-wrap gap-2 mb-4">
-          <button id="selectAllBtn" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">全选</button>
-          <button id="deselectAllBtn" class="text-sm px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded">取消全选</button>
-        </div>
-        <ul id="linkList" class="space-y-2 max-h-60 overflow-y-auto" style="width:100%"></ul>
-      </div>
-    </main>
-
-    
-  </div>
-
-  <script>
-    const inputText = document.getElementById('inputText');
-    const extractBtn = document.getElementById('extractBtn');
-    
-    const downloadBtn = document.getElementById('downloadBtn');
-    const clearBtn = document.getElementById('clearBtn');
-    const sampleBtn = document.getElementById('sampleBtn');
-    const resultSection = document.getElementById('resultSection');
-    const linkList = document.getElementById('linkList');
-    const linkCount = document.getElementById('linkCount');
-    const progressSection = document.getElementById('progressSection');
-    const progressBar = document.getElementById('progressBar');
-    const progressText = document.getElementById('progressText');
-    const selectAllBtn = document.getElementById('selectAllBtn');
-    const deselectAllBtn = document.getElementById('deselectAllBtn');
-
-    let imageLinks = [];
-
-    // 示例数据
-    sampleBtn.addEventListener('click', () => {
-      const sampleData = [
-        {
-          "id": 1,
-          "content": "<div><img src='thumb1.jpg' data-original='https://picsum.photos/800/600?random=1' alt='风景图片1'><p>描述内容1</p></div>"
-        },
-        {
-          "id": 2,
-          "content": "<div><img src='thumb2.jpg' data-original='https://picsum.photos/800/600?random=2' alt='风景图片2'><img src='thumb3.jpg' data-original='https://picsum.photos/800/600?random=3' alt='风景图片3'></div>"
-        },
-        {
-          "id": 3,
-          "content": "<div><img src='thumb4.jpg' data-original='https://picsum.photos/800/600?random=1' alt='重复图片'>重复链接测试</div>"
-        },
-        {
-          "id": 4,
-          "content": "<div><img src='thumb5.jpg' data-original='https://picsum.photos/800/600?random=4' alt='风景图片4'></div>"
-        }
-      ];
-      inputText.value = JSON.stringify(sampleData, null, 2);
-    });
-
-    // 提取data-original图片链接
-    extractBtn.addEventListener('click', () => {
-      const text = inputText.value;
-      if (!text.trim()) {
-        alert("请输入数组字符串内容！");
-        return;
-      }
-
-      try {
-        // 解析数组字符串
-        const dataArray = JSON.parse(text);
-        
-        // 检查是否为数组
-        if (!Array.isArray(dataArray)) {
-          alert("输入内容必须是一个数组！");
-          return;
-        }
-
-        // 提取所有content属性中的data-original链接
-        const allLinks = [];
-        dataArray.forEach(item => {
-          if (item.content && typeof item.content === 'string') {
-            // 匹配data-original属性中的图片链接 src
-            const dataOriginalRegex = /data-original\s*=\s*["']([^"']+\.(?:jpg|jpeg|png|gif|bmp|webp)(?:\?[^"']*)?)["']/gi;
-            const matches = item.content.matchAll(dataOriginalRegex);
-            for (const match of matches) {
-              allLinks.push(match[1]);
-            }
-          }
-        });
-
-        // 去重
-        imageLinks = [...new Set(allLinks)];
-
-        if (imageLinks.length === 0) {
-          resultSection.classList.add('hidden');
-          alert("未找到任何data-original图片链接！");
-          return;
-        }
-
-        renderLinks();
-        linkCount.textContent = imageLinks.length;
-        downloadBtn.disabled = false;
-      } catch (error) {
-        console.error(error);
-        alert("解析数组字符串失败，请检查格式是否正确！");
-      }
-    });
-
-
-
-
-    // 渲染链接列表
-    function renderLinks() {
-      linkList.innerHTML = '';
-      imageLinks.forEach((link, index) => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center justify-between bg-gray-50 p-3 rounded border';
-        li.innerHTML = `
-          <div class="flex items-center flex-1 min-w-0">
-            <input type="checkbox" class="mr-3 link-checkbox" data-index="${index}" checked>
-            <a href="${link}" target="_blank" class="text-indigo-600 hover:underline truncate">${link}</a>
-          </div>
-          <button class="copy-btn ml-2 px-3 py-1 text-sm bg-gray-200 hover:bg-gray-300 rounded whitespace-nowrap" data-link="${link}">
-            复制
-          </button>
-        `;
-        linkList.appendChild(li);
-      });
-
-      resultSection.classList.remove('hidden');
-
-      // 绑定复制按钮事件
-      document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          navigator.clipboard.writeText(btn.dataset.link).then(() => {
-            btn.textContent = '已复制';
-            setTimeout(() => btn.textContent = '复制', 2000);
-          });
-        });
-      });
-
-      // 绑定复选框事件
-      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
-        checkbox.addEventListener('change', updateDownloadButton);
-      });
-
-      updateDownloadButton();
-    }
-
-    // 更新下载按钮状态
-    function updateDownloadButton() {
-      const checkedCount = document.querySelectorAll('.link-checkbox:checked').length;
-      downloadBtn.disabled = checkedCount === 0;
-    }
-
-    // 全选/取消全选
-    selectAllBtn.addEventListener('click', () => {
-      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
-        checkbox.checked = true;
-      });
-      updateDownloadButton();
-    });
-
-    deselectAllBtn.addEventListener('click', () => {
-      document.querySelectorAll('.link-checkbox').forEach(checkbox => {
-        checkbox.checked = false;
-      });
-      updateDownloadButton();
-    });
-
-    // 下载打包图片
-    downloadBtn.addEventListener('click', async () => {
-      // 获取选中的链接
-      const selectedLinks = Array.from(document.querySelectorAll('.link-checkbox:checked'))
-        .map(checkbox => imageLinks[parseInt(checkbox.dataset.index)]);
-
-      if (selectedLinks.length === 0) return;
-
-      progressSection.classList.remove('hidden');
-      progressText.textContent = '0%';
-      progressBar.style.width = '0%';
-
-      const zip = new JSZip();
-      const imgFolder = zip.folder("提取的图片");
-
-      try {
-        for (let i = 0; i < selectedLinks.length; i++) {
-          const url = selectedLinks[i];
-          try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const filename = url.split('/').pop().split('?')[0] || `image_${i + 1}`;
-            imgFolder.file(filename, blob);
-          } catch (err) {
-            console.error("下载失败:", url);
-          }
-
-          // 更新进度
-          const progress = Math.round(((i + 1) / selectedLinks.length) * 100);
-          progressText.textContent = `${progress}%`;
-          progressBar.style.width = `${progress}%`;
-        }
-
-        const content = await zip.generateAsync({ type: "blob" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(content);
-        
-        link.download = `zhihu图片${new Date().getTime()}.zip`
-        //"提取的data-original图片.zip";
-        link.click();
-
-        // 完成后隐藏进度条
-        setTimeout(() => {
-          progressSection.classList.add('hidden');
-        }, 1000);
-      } catch (error) {
-        console.error("打包下载失败:", error);
-        alert("下载过程中出现错误，请重试");
-        progressSection.classList.add('hidden');
-      }
-    });
-
-    // 清空内容
-    clearBtn.addEventListener('click', () => {
-      inputText.value = '';
-      resultSection.classList.add('hidden');
-      downloadBtn.disabled = true;
-      imageLinks = [];
-      progressSection.classList.add('hidden');
-    });
-  </script>
-
-  <!-- 引入 JSZip 库用于打包下载 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-</body>
-</html>
+<!-- 
+  html
+实现初始化只有一个输入框，可添加删除更多输入框，输入框输入内容格式为数组，将所有输入框的值转化成json格式合并成一个数组，并去除相同值
+例如输入两个数组：['a','b','c',] ['a1','b2','c',]
+代码实际需求
+1. 支持动态增删输入框，每个输入框期望接收数组格式的字符串。
+2. 内置容错解析逻辑，兼容标准JSON及单引号数组格式，自动处理末尾逗号。
+3. 利用Set结构高效合并所有输入框解析后的数组元素并去除重复值，最终输出标准JSON字符串。
+4. 按钮：输出标准JSON字符串可复制
+5. 按钮：提取标准JSON字符串中关键字关键字,并提出属性下对应图片链接成数组
+6. 按钮：图片链接打包下载
+7. 按钮：清空所有数据
+限制：
+1、不能使用tailwindcss，
+2、link使用国内镜像
+3、不使用图标
+4、禁止使用字体
+ -->
+ <!DOCTYPE html>
+ <html lang="zh-CN">
+   <head>
+     <meta charset="UTF-8" />
+     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <title>数组处理与图片提取工具</title>
+     <!-- 使用国内镜像引入 JSZip 用于打包下载 -->
+     <!-- <script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.10.1/jszip.min.js"></script> -->
+     <script src="./npm/jszip@3.10.1.min.js"></script>
+     <style>
+       :root {
+         --primary-color: #4a90e2;
+         --success-color: #2ecc71;
+         --danger-color: #e74c3c;
+         --warning-color: #f39c12;
+         --bg-color: #f5f7fa;
+         --card-bg: #ffffff;
+         --text-color: #2c3e50;
+         --border-color: #dcdfe6;
+       }
+ 
+       * {
+         box-sizing: border-box;
+         margin: 0;
+         padding: 0;
+       }
+ 
+       body {
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+           sans-serif;
+         background-color: var(--bg-color);
+         color: var(--text-color);
+         line-height: 1.6;
+         padding: 20px;
+       }
+ 
+       .container {
+         max-width: 900px;
+         margin: 0 auto;
+         background: var(--card-bg);
+         border-radius: 8px;
+         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+         padding: 30px;
+       }
+ 
+       h1 {
+         text-align: center;
+         margin-bottom: 20px;
+         font-size: 24px;
+         color: var(--primary-color);
+       }
+ 
+       .description {
+         text-align: center;
+         color: #666;
+         margin-bottom: 30px;
+         font-size: 14px;
+       }
+ 
+       /* 输入区域样式 */
+       .input-section {
+         margin-bottom: 20px;
+       }
+ 
+       .input-group {
+         display: flex;
+         gap: 10px;
+         margin-bottom: 10px;
+         align-items: center;
+       }
+ 
+       .array-input {
+         flex: 1;
+         padding: 10px;
+         border: 1px solid var(--border-color);
+         border-radius: 4px;
+         font-size: 14px;
+         transition: border-color 0.3s;
+       }
+ 
+       .array-input:focus {
+         border-color: var(--primary-color);
+         outline: none;
+       }
+ 
+       .btn {
+         padding: 8px 16px;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+         font-size: 14px;
+         transition: opacity 0.3s, transform 0.1s;
+         color: white;
+         white-space: nowrap;
+       }
+ 
+       .btn:hover {
+         opacity: 0.9;
+       }
+ 
+       .btn:active {
+         transform: scale(0.98);
+       }
+ 
+       .btn-add {
+         background-color: var(--primary-color);
+       }
+ 
+       .btn-remove {
+         background-color: var(--danger-color);
+       }
+ 
+       .btn-process {
+         background-color: var(--success-color);
+         /* width: 100%;
+             padding: 12px;
+             margin-top: 10px;
+             font-size: 16px; */
+       }
+ 
+       .btn-clear {
+         background-color: #95a5a6;
+       }
+ 
+       /* 结果区域样式 */
+       .result-section {
+         margin-top: 30px;
+         border-top: 1px solid var(--border-color);
+         padding-top: 20px;
+       }
+ 
+       .result-box {
+         margin-bottom: 20px;
+       }
+ 
+       .result-label {
+         font-weight: bold;
+         margin-bottom: 8px;
+         display: block;
+       }
+ 
+       textarea {
+         width: 100%;
+         height: 120px;
+         padding: 10px;
+         border: 1px solid var(--border-color);
+         border-radius: 4px;
+         font-family: monospace;
+         font-size: 13px;
+         resize: vertical;
+         background-color: #fafafa;
+       }
+ 
+       .action-buttons {
+         display: flex;
+         gap: 10px;
+         flex-wrap: wrap;
+         margin-top: 10px;
+       }
+ 
+       .btn-copy {
+         background-color: var(--warning-color);
+       }
+ 
+       .btn-extract {
+         background-color: #8e44ad;
+       }
+ 
+       .btn-download {
+         background-color: #2980b9;
+       }
+ 
+       /* 图片预览区域 */
+       .image-preview-area {
+         margin-top: 20px;
+         display: none; /* 默认隐藏 */
+       }
+ 
+       .image-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+         gap: 10px;
+         margin-top: 10px;
+       }
+ 
+       .img-item {
+         position: relative;
+         aspect-ratio: 1;
+         border: 1px solid var(--border-color);
+         border-radius: 4px;
+         overflow: hidden;
+         background: #eee;
+       }
+ 
+       .img-item img {
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+       }
+ 
+       .status-msg {
+         margin-top: 10px;
+         font-size: 14px;
+         min-height: 20px;
+         color: red;
+       }
+ 
+       .status-success {
+         color: var(--success-color);
+       }
+ 
+       .status-error {
+         color: var(--danger-color);
+       }
+ 
+       .loading {
+         display: inline-block;
+         width: 12px;
+         height: 12px;
+         border: 2px solid rgba(0, 0, 0, 0.1);
+         border-left-color: var(--primary-color);
+         border-radius: 50%;
+         animation: spin 1s linear infinite;
+         margin-right: 5px;
+       }
+ 
+       @keyframes spin {
+         to {
+           transform: rotate(360deg);
+         }
+       }
+     </style>
+   </head>
+   <body>
+     <div class="container">
+       <h1>数组合并与图片提取工具</h1>
+       <p class="description">功能：合并去重、提取特定Key下的图片链接、打包下载图片。</p>
+       <div id="download-status" class="status-msg"></div>
+ 
+       <div class="input-section" id="inputs-container">
+         <!-- 动态输入框将在此生成 -->
+       </div>
+ 
+       <button class="btn btn-add" onclick="addInput()">添加输入框</button>
+       <button class="btn btn-process" onclick="processAndMerge()">合并去重</button>
+ 
+       <div class="result-section">
+         <div class="result-box">
+           <label class="result-label">合并后的标准 JSON 数组:</label>
+           <textarea
+             id="merged-result"
+             readonly
+             placeholder="点击“合并去重”后显示结果..."
+           ></textarea>
+           <div class="action-buttons">
+             <button class="btn btn-copy" onclick="copyToClipboard('merged-result')">
+               复制 JSON
+             </button>
+             <button class="btn btn-extract" onclick="extractImages()">提取图片链接</button>
+             <button class="btn btn-clear" onclick="clearAllData()">清空所有数据</button>
+           </div>
+         </div>
+ 
+         <div class="result-box" id="extracted-section" style="display: none">
+           <label class="result-label">提取到的图片链接:</label>
+           <textarea
+             id="image-links-result"
+             readonly
+             placeholder="提取的图片链接将显示在这里..."
+           ></textarea>
+           <div class="action-buttons">
+             <button class="btn btn-copy" onclick="copyToClipboard('image-links-result')">
+               复制链接
+             </button>
+             <button class="btn btn-download" onclick="downloadImages()">打包下载图片</button>
+           </div>
+           <!-- <div id="download-status" class="status-msg"> -->
+         </div>
+ 
+         <!-- <div class="image-preview-area" id="image-preview">
+             <label class="result-label">图片预览:</label>
+             <div class="image-grid" id="image-grid"></div>
+         </div> -->
+       </div>
+     </div>
+ 
+     <script>
+       // 初始化：添加第一个输入框
+       window.onload = function () {
+         addInput()
+       }
+ 
+       /**
+        * 动态添加输入框
+        */
+       function addInput() {
+         const container = document.getElementById('inputs-container')
+         const div = document.createElement('div')
+         div.className = 'input-group'
+ 
+         const input = document.createElement('input')
+         input.type = 'text'
+         input.placeholder = ''
+         input.className = 'array-input'
+ 
+         const removeBtn = document.createElement('button')
+         removeBtn.textContent = '删除'
+         removeBtn.className = 'btn btn-remove'
+         removeBtn.onclick = function () {
+           if (document.querySelectorAll('.input-group').length > 1) {
+             container.removeChild(div)
+           } else {
+             const statusDiv = document.getElementById('download-status')
+             statusDiv.innerHTML = '至少需要保留一个输入框'
+             statusDiv.className = 'status-msg status-error'
+           }
+         }
+ 
+         div.appendChild(input)
+         div.appendChild(removeBtn)
+         container.appendChild(div)
+       }
+ 
+       /**
+        * 容错解析函数：将类数组字符串转换为真实数组/对象
+        */
+       function safeParseArray(str) {
+         if (!str || str.trim() === '') return []
+ 
+         let cleanStr = str.trim()
+ 
+         // 尝试直接 JSON 解析
+         try {
+           const parsed = JSON.parse(cleanStr)
+           return Array.isArray(parsed) ? parsed : [parsed]
+         } catch (e) {
+           // 继续尝试修复
+         }
+ 
+         // 修复策略：处理单引号和末尾逗号
+         if (cleanStr.startsWith('[') && cleanStr.endsWith(']')) {
+           // 替换单引号为双引号 (简单场景有效)
+           let standardized = cleanStr.replace(/'/g, '"')
+           // 处理末尾逗号: , ] -> ]
+           standardized = standardized.replace(/,\s*\]/g, ']')
+ 
+           try {
+             const parsed = JSON.parse(standardized)
+             return Array.isArray(parsed) ? parsed : [parsed]
+           } catch (e) {
+             // 如果还是失败，尝试手动分割简单字符串数组
+             // 仅适用于纯字符串数组，不适用于对象数组
+             let content = cleanStr.replace(/^\[/, '').replace(/\]$/, '').trim()
+             if (!content) return []
+ 
+             // 简单分割：按逗号分割，去除引号
+             // 注意：这不能处理包含逗号的复杂字符串或对象
+             const tokens = content
+               .split(',')
+               .map(t => {
+                 t = t.trim()
+                 if (
+                   (t.startsWith('"') && t.endsWith('"')) ||
+                   (t.startsWith("'") && t.endsWith("'"))
+                 ) {
+                   return t.slice(1, -1)
+                 }
+                 return t
+               })
+               .filter(t => t !== '')
+ 
+             return tokens
+           }
+         }
+ 
+         return []
+       }
+ 
+       /**
+        * 主处理逻辑：收集、解析、合并、去重、输出
+        */
+       function processAndMerge() {
+         const inputs = document.querySelectorAll('.array-input')
+         const allValues = new Set()
+ 
+         inputs.forEach(input => {
+           const val = input.value
+           if (val.trim()) {
+             const arr = safeParseArray(val)
+             arr.forEach(item => {
+               // 如果是对象，转为字符串存储以便去重比较，或者只存基本类型
+               // 题目要求合并成一个数组并去重。如果是对象，JSON.stringify后去重
+               if (typeof item === 'object' && item !== null) {
+                 allValues.add(JSON.stringify(item))
+               } else {
+                 allValues.add(String(item))
+               }
+             })
+           }
+         })
+ 
+         // 将Set转换回数组
+         let uniqueArray = Array.from(allValues).map(item => {
+           try {
+             // 尝试还原对象
+             return JSON.parse(item)
+           } catch (e) {
+             // 如果不是JSON对象，则是普通字符串
+             return item
+           }
+         })
+ 
+         // 生成标准JSON字符串
+         const jsonResult = JSON.stringify(uniqueArray, null, 2)
+ 
+         // 显示结果
+         document.getElementById('merged-result').value = jsonResult
+ 
+         // 重置提取区域
+         document.getElementById('extracted-section').style.display = 'none'
+         document.getElementById('image-preview').style.display = 'none'
+         // document.getElementById('image-grid').innerHTML = '';
+         document.getElementById('image-links-result').value = ''
+       }
+ 
+       /**
+        * 复制内容到剪贴板
+        */
+       function copyToClipboard(elementId) {
+         const output = document.getElementById(elementId)
+         if (!output.value) return
+ 
+         output.select()
+         output.setSelectionRange(0, 99999)
+ 
+         const statusDiv = document.getElementById('download-status')
+         statusDiv.className = 'status-msg'
+ 
+         navigator.clipboard
+           .writeText(output.value)
+           .then(() => {
+             statusDiv.innerHTML = '已复制到剪贴板！'
+           })
+           .catch(err => {
+             console.error('Failed to copy: ', err)
+             statusDiv.innerHTML = '复制失败，请手动复制'
+           })
+       }
+ 
+       /**
+        * 提取 关键字 下的图片链接
+        * 假设数据结构可能是：
+        * 1. 数组中的元素是对象，且包含 关键字 属性
+        * 2. 关键字 的值是一个图片URL字符串
+        * 3. 或者 关键字 的值是一个包含 url 的对象
+        * 这里我们假设 关键字 直接对应 URL 字符串，或者在对象内部查找
+        */
+       function extractImages() {
+         const mergedJson = document.getElementById('merged-result').value
+         if (!mergedJson) {
+           const statusDiv = document.getElementById('download-status')
+           statusDiv.innerHTML = '请先合并数据！'
+           statusDiv.className = 'status-msg'
+           return
+         }
+ 
+         try {
+           const data = JSON.parse(mergedJson)
+           const imageLinks = new Set()
+ 
+           // 递归查找所有对象中的 关键字
+           function findKeyAAA(obj) {
+             if (Array.isArray(obj)) {
+               // debugger
+               obj.forEach(item => findKeyAAA(item))
+             } else if (typeof obj === 'object' && obj !== null) {
+               // debugger
+               if (typeof obj.content === 'string' && obj.content !== null) {
+                 // 匹配data-original属性中的图片链接 src
+                 const dataOriginalRegex =
+                   /data-original\s*=\s*["']([^"']+\.(?:jpg|jpeg|png|gif|bmp|webp)(?:\?[^"']*)?)["']/gi
+                 const matches = obj.content.matchAll(dataOriginalRegex)
+                 for (const match of matches) {
+                   imageLinks.add(match[1])
+                 }
+               } else if (
+                 Array.isArray(obj.content) &&
+                 obj.content !== null &&
+                 obj.content.length !== 0
+               ) {
+                 // debugger
+                 obj.content.forEach(item => {
+                   if (item.type && item.type === 'image' && item.original_url !== null) {
+                     imageLinks.add(item.original_url)
+                   }
+                 })
+               }
+             }
+           }
+ 
+           findKeyAAA(data)
+ 
+           const linksArray = Array.from(imageLinks)
+           if (linksArray.length === 0) {
+             const statusDiv = document.getElementById('download-status')
+             statusDiv.innerHTML = '未找到包含有效图片链接字段'
+             statusDiv.className = 'status-msg'
+             return
+           }
+ 
+           // 显示提取结果
+           document.getElementById('extracted-section').style.display = 'block'
+           document.getElementById('image-links-result').value = JSON.stringify(linksArray, null, 2)
+ 
+           // 显示预览
+           /* const previewArea = document.getElementById('image-preview');
+             const grid = document.getElementById('image-grid');
+             grid.innerHTML = '';
+             previewArea.style.display = 'block';
+ 
+             linksArray.forEach(link => {
+                 const div = document.createElement('div');
+                 div.className = 'img-item';
+                 const img = document.createElement('img');
+                 img.src = link;
+                 img.alt = "Extracted Image";
+                 img.onerror = function() { this.src = 'https://via.placeholder.com/100?text=Error'; };
+                 div.appendChild(img);
+                 grid.appendChild(div);
+             }); */
+         } catch (e) {
+           console.error(e)
+           const statusDiv = document.getElementById('download-status')
+           statusDiv.innerHTML = '解析合并后的JSON失败，请检查格式'
+           statusDiv.className = 'status-msg'
+         }
+       }
+ 
+       /**
+        * 打包下载图片
+        */
+       async function downloadImages() {
+         const linksText = document.getElementById('image-links-result').value
+         if (!linksText) {
+           const statusDiv = document.getElementById('download-status')
+           statusDiv.innerHTML = '没有可下载的图片链接'
+           statusDiv.className = 'status-msg'
+           return
+         }
+ 
+         let links = []
+         const statusDiv = document.getElementById('download-status')
+         statusDiv.innerHTML = '<span class="loading"></span> 正在准备下载...'
+         statusDiv.className = 'status-msg'
+         try {
+           links = JSON.parse(linksText)
+         } catch (e) {
+           statusDiv.innerHTML = '图片链接格式错误'
+           statusDiv.className = 'status-msg'
+           return
+         }
+ 
+         try {
+           const zip = new JSZip()
+           const imgFolder = zip.folder('提取的图片')
+ 
+           // 限制并发请求数，避免浏览器阻塞
+           const concurrency = 3
+           for (let i = 0; i < links.length; i += concurrency) {
+             const batch = links.slice(i, i + concurrency)
+             await Promise.all(
+               batch.map(async (link, index) => {
+                 try {
+                   // 使用 fetch 获取图片二进制数据
+                   // 注意：如果图片服务器不支持 CORS，这会失败
+                   const response = await fetch(link)
+                   if (!response.ok) throw new Error(`HTTP ${response.status}`)
+                   const blob = await response.blob()
+                   // debugger
+                   // 生成文件名：从URL提取或使用索引
+                   let filename = `image_${i + index}.jpg`
+                   try {
+                     const urlObj = new URL(link)
+                     const pathName = urlObj.pathname
+                     const ext = pathName.substring(pathName.lastIndexOf('.') + 1)
+                     if (ext && ext.length < 5) {
+                       filename = `image_${i + index}.${ext}`
+                     }
+                     filename = pathName.replace('/', '')
+                   } catch (e) {
+                     // ignore url parse error
+                   }
+ 
+                   imgFolder.file(filename, blob)
+                 } catch (err) {
+                   console.warn(`Failed to load image: ${link}`, err)
+                   // 可以选择跳过或添加错误文件
+                 }
+               })
+             )
+             statusDiv.innerHTML = `<span class="loading"></span> 已处理 ${Math.min(
+               i + concurrency,
+               links.length
+             )} / ${links.length} 张图片...`
+           }
+ 
+           statusDiv.innerHTML = '<span class="loading"></span> 正在生成压缩包...'
+ 
+           const content = await zip.generateAsync({ type: 'blob' })
+ 
+           // 触发下载
+           const url = window.URL.createObjectURL(content)
+           const a = document.createElement('a')
+           a.href = url
+           // a.download = "images_package.zip";
+           a.download = `zhihu图片${new Date().getTime()}.zip`
+           document.body.appendChild(a)
+           a.click()
+           window.URL.revokeObjectURL(url)
+           document.body.removeChild(a)
+ 
+           statusDiv.innerHTML = '下载已开始！'
+           statusDiv.className = 'status-msg status-success'
+         } catch (e) {
+           console.error(e)
+           statusDiv.innerHTML = '下载失败: ' + e.message
+           statusDiv.className = 'status-msg status-error'
+         }
+       }
+ 
+       /**
+        * 清空所有数据
+        */
+       function clearAllData() {
+         const container = document.getElementById('inputs-container')
+         container.innerHTML = ''
+         addInput() // 重新添加一个空输入框
+ 
+         document.getElementById('merged-result').value = ''
+         document.getElementById('extracted-section').style.display = 'none'
+         /* document.getElementById('image-preview').style.display = 'none';
+             document.getElementById('image-grid').innerHTML = ''; */
+         document.getElementById('image-links-result').value = ''
+         document.getElementById('download-status').innerHTML = ''
+       }
+     </script>
+   </body>
+ </html>
+ 
