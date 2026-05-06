@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>python.md</title>
+<title>githubFast</title>
 <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
 
 <style>
@@ -12,6 +12,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
 	font-size: var(--vscode-markdown-font-size, 14px);
 	padding: 0 26px;
 	line-height: var(--vscode-markdown-line-height, 22px);
@@ -26,6 +27,7 @@ body {
 	margin: 16px;
 	text-align: center;
 	font-size: 12px;
+	font-family: sans-serif;
 	background-color:#444444;
 	cursor: pointer;
 	padding: 6px;
@@ -163,6 +165,7 @@ blockquote {
 }
 
 code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
 	font-size: 1em;
 	line-height: 1.357em;
 }
@@ -305,6 +308,7 @@ pre code {
  */
 
  body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
 	padding: 0 12px;
 }
 
@@ -350,6 +354,8 @@ code {
 
 </style>
 
+<!-- <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script> -->
+
 <script src="./npm/mermaid@11.14.0.min.js"></script>
 </head>
 <body>
@@ -361,13 +367,30 @@ code {
           : 'default'
     });
   </script>
-<h1 id="python">Python</h1>
-<h2 id="%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83">创建虚拟环境</h2>
-<pre class="hljs"><code><div>python -m venv myvenv
+<h1 id="%E4%BD%BF%E7%94%A8switchhosts%E5%8A%A0%E9%80%9F%E8%AE%BF%E9%97%AEgithub">使用SwitchHosts加速访问Github</h1>
+<p>Github网站时常会出现无法访问的问题，我们可使用SwitchHosts来自动修改hosts的方式来达到顺利访问的目的（经测试，也有失败概率）</p>
+<h2 id="1%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85%E5%90%8E%E9%A6%96%E5%85%88%E9%9C%80%E6%94%B9%E4%B8%80%E4%B8%8Bhosts%E7%9A%84%E6%9D%83%E9%99%90">1、下载安装后，首先需改一下hosts的权限</h2>
+<p>新增、修改无权限的话，编辑 C:\Windows\System32\drivers\etc\hosts 属性修改当前电脑登录用户控制权限</p>
+<h2 id="2%E6%B7%BB%E5%8A%A0%E8%BF%9C%E7%A8%8B%E8%A7%84%E5%88%99%E5%A6%82%E4%B8%8B">2、添加远程规则如下</h2>
+<pre class="hljs"><code><div>Hosts类型：远程
+Hosts标题：github-hosts（自定义即可）
+自动刷新：1小时
+URL：下面四个任意一个即可
+
+https://raw.hellogithub.com/hosts
+https://gitlab.com/ineo6/hosts/-/raw/master/hosts
+https://cdn.jsdelivr.net/gh/521xueweihan/GitHub520@main/hosts
+
 </div></code></pre>
-<h2 id="%E6%BF%80%E6%B4%BB%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E2%80%8C">激活虚拟环境‌</h2>
-<pre class="hljs"><code><div>.\venv\Scripts\activate
+<p>基本上都可以自动更新，偶尔也存在失败的情况，可以换个地址试试。</p>
+<h2 id="3%E6%89%8B%E5%8A%A8%E6%9B%B4%E6%96%B0hosts%E6%96%87%E4%BB%B6%E7%84%B6%E5%90%8E%E5%88%B7%E6%96%B0dns%E7%BC%93%E5%AD%98">3、手动更新hosts文件，然后刷新DNS缓存：</h2>
+<pre class="hljs"><code><div>
+ipconfig /flushdns
+
 </div></code></pre>
+<h2 id="%E8%A1%A5%E5%85%85switchhosts-%E4%B8%8B%E8%BD%BD%E5%9C%B0%E5%9D%80">补充：SwitchHosts 下载地址：</h2>
+<p><a href="https://github.com/oldj/SwitchHosts/releases">SwitchHosts官网</a>
+<a href="https://oldj.github.io/SwitchHosts/">SwitchHosts官网</a></p>
 
 </body>
 </html>
