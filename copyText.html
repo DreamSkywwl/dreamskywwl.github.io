@@ -267,7 +267,7 @@
             const otherReq = others ? others : "无";
 
             // 构建基础模板
-            let result = `根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对${name}的定义，不少于300字，不用分段\n`;
+            let result = `根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对${name}的定义，文本长度超过300字不超过450字左右，不用分段\n`;
             result += `业务功能描述：${funcDesc}\n`;
             result += `业务流程文字描述：${textDesc}\n`;
             result += `其他要求：${otherReq}`;
