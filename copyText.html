@@ -1,0 +1,375 @@
+<!-- 生成以下功能的html单页面，不使用TailwindCSS，不引入Font，使用默认字体，标题为文案生成器
+- 一个输入框组件，名字：接入组件名称，id为name，默认值为空
+- 两个输入域组件，名字分别为业务功能描述和业务流程文字描述，id分别为function_description和text_description，默认值为空
+- 一个输入框组件，名字：其他要求，id为othersText，默认值为空
+- 一个生成按钮，根据输入框和输入域生成类似文本（只读）：
+根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对XXXX(id为name值填入)的定义，不少于300字，不用分段
+业务功能描述：XXXX（id为function_description值填入）
+业务流程文字描述：XXXX（id为text_description值填入）
+其他要求：默认为无（若id为othersText值为空，默认为无，有值则填写入id为othersText的值）
+- 一个复制按钮，可以复制根据要求生成的文本
+- 一个清空按钮，可以清空输入框和输入域的文本
+- 一个跳转按钮，可以跳转浏览器到百度网页 -->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文案生成器</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --primary-hover: #357abd;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dcdfe6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-generate {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-copy {
+            background-color: #67c23a;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background-color: #5daf34;
+        }
+
+        .btn-clear {
+            background-color: #f56c6c;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background-color: #dd6161;
+        }
+
+        .btn-jump {
+            background-color: #909399;
+            color: white;
+        }
+
+        .btn-jump:hover {
+            background-color: #82848a;
+        }
+
+        .result-area {
+            margin-top: 30px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        .result-label {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        #generatedText {
+            width: 100%;
+            min-height: 150px;
+            padding: 15px;
+            background-color: #f9fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            color: #606266;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        /* Toast Notification */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 4px;
+            padding: 16px;
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>文案生成器</h1>
+
+        <div class="form-group">
+            <label for="name">接入组件名称</label>
+            <input type="text" id="name" placeholder="请输入组件名称">
+        </div>
+
+        <div class="form-group">
+            <label for="function_description">业务功能描述</label>
+            <textarea id="function_description" placeholder="请输入业务功能描述"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="text_description">业务流程文字描述</label>
+            <textarea id="text_description" placeholder="请输入业务流程文字描述"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="othersText">其他要求</label>
+            <input type="text" id="othersText" placeholder="请输入其他要求（可选）">
+        </div>
+
+        <div class="button-group">
+            <button class="btn-generate" onclick="generateText()">生成文案</button>
+            <button class="btn-copy" onclick="copyText()">复制结果</button>
+            <button class="btn-clear" onclick="clearInputs()">清空输入</button>
+            <button class="btn-jump" onclick="jumpToBaidu()">跳转百度</button>
+        </div>
+
+        <div class="result-area">
+            <label class="result-label">生成结果：</label>
+            <textarea id="generatedText" readonly placeholder="点击生成按钮后，结果将显示在这里..."></textarea>
+        </div>
+    </div>
+
+    <div id="toast">操作成功</div>
+
+    <script>
+        /**
+         * 生成文案逻辑
+         */
+        function generateText() {
+            const name = document.getElementById('name').value.trim();
+            const funcDesc = document.getElementById('function_description').value.trim();
+            const textDesc = document.getElementById('text_description').value.trim();
+            const others = document.getElementById('othersText').value.trim();
+
+            if (!name || !funcDesc || !textDesc) {
+                showToast("请填写组件名称、业务功能描述和业务流程描述");
+                return;
+            }
+
+            const otherReq = others ? others : "无";
+
+            // 构建基础模板
+            let result = `根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对${name}的定义，不少于300字，不用分段\n`;
+            result += `业务功能描述：${funcDesc}\n`;
+            result += `业务流程文字描述：${textDesc}\n`;
+            result += `其他要求：${otherReq}`;
+
+            // 为了满足“不少于300字”的视觉要求，如果用户输入较短，这里仅做格式拼接。
+            // 注意：纯前端无法真正“智能生成”300字的新内容，除非接入AI API。
+            // 此处严格按照题目要求的格式进行字符串拼接。
+
+            document.getElementById('generatedText').value = result;
+            showToast("文案生成成功");
+        }
+
+        /**
+         * 复制文本到剪贴板
+         */
+        function copyText() {
+            const textArea = document.getElementById('generatedText');
+            const text = textArea.value;
+
+            if (!text) {
+                showToast("没有可复制的内容");
+                return;
+            }
+
+            // 使用现代 Clipboard API
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast("复制成功");
+                }).catch(err => {
+                    console.error('无法复制: ', err);
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        /**
+         * 降级复制方案
+         */
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // 避免滚动到底部
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.position = "fixed";
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    showToast("复制成功");
+                } else {
+                    showToast("复制失败，请手动复制");
+                }
+            } catch (err) {
+                console.error('降级复制失败: ', err);
+                showToast("复制失败，请手动复制");
+            }
+
+            document.body.removeChild(textArea);
+        }
+
+        /**
+         * 清空所有输入框和结果区
+         */
+        function clearInputs() {
+            document.getElementById('name').value = '';
+            document.getElementById('function_description').value = '';
+            document.getElementById('text_description').value = '';
+            document.getElementById('othersText').value = '';
+            document.getElementById('generatedText').value = '';
+            showToast("已清空所有内容");
+        }
+
+        /**
+         * 跳转到百度
+         */
+        function jumpToBaidu() {
+            window.open('https://www.baidu.com', '_blank');
+        }
+
+        /**
+         * 显示提示消息
+         */
+        function showToast(message) {
+            const toast = document.getElementById("toast");
+            toast.textContent = message;
+            toast.className = "show";
+
+            // 3秒后隐藏
+            setTimeout(function () {
+                toast.className = toast.className.replace("show", "");
+            }, 3000);
+        }
+    </script>
+
+</body>
+
+</html>

@@ -144,9 +144,15 @@
     "id": 24
   },
   {
+    "name": "文案生成器",
+    "url": "https://dreamskywwl.github.io/copyText.html",
+    "category": "other",
+    "id": 25
+  },
+  {
     "name": "Github",
     "url": "https://github.com/DreamSkywwl",
     "category": "other",
-    "id": 25
+    "id": 26
   }
 ]
