@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>macos catalina 最高可使用homebrew什么版本的.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>在 macOS Catalina (10.15) 上，你可以使用 Homebrew 的最新稳定版本。</p>
+<p>Homebrew 官方持续维护并支持 macOS Catalina 及更高版本（如 Big Sur、Monterey、Ventura、Sonoma 等）。这意味着只要 Homebrew 团队未正式宣布弃用 Catalina，你就可以通过标准安装脚本获取并运行最新的 Homebrew 版本。</p>
+<p>关键点说明：</p>
+<ol>
+<li>
+<p>兼容性：</p>
+<ul>
+<li>Homebrew 要求 macOS 10.13 (High Sierra) 或更高版本。</li>
+<li>macOS Catalina (10.15) 完全满足这一要求，且是官方推荐的良好兼容起点之一。</li>
+<li>对于 Intel 芯片的 Mac，Catalina 支持良好；对于 Apple Silicon (M1/M2/M3) 芯片，Catalina 并不原生支持（Apple Silicon 需 macOS 11 Big Sur 及以上），因此如果你使用的是 M 系列芯片 Mac，则无法安装 Catalina，自然也不存在此问题。但如果是 Intel Mac 运行 Catalina，则完全支持最新 Homebrew。</li>
+</ul>
+</li>
+<li>
+<p>如何获取最新版本：</p>
+<ul>
+<li>你无需寻找特定“旧版”Homebrew。只需在终端中运行官方安装命令，它会自动检测你的系统并安装当前最新的稳定版 Homebrew。</li>
+<li>安装命令通常为：<pre class="hljs"><code><div>/bin/bash -c <span class="hljs-string">"<span class="hljs-variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>"</span>
+</div></code></pre>
+</li>
+<li>安装后，可通过 <code>brew --version</code> 查看当前安装的 Homebrew 版本。</li>
+</ul>
+</li>
+<li>
+<p>注意事项：</p>
+<ul>
+<li>Xcode 命令行工具：安装 Homebrew 前，请确保已安装 Xcode Command Line Tools。可在终端运行 <code>xcode-select --install</code> 进行安装。</li>
+<li>系统更新：虽然 Catalina 仍受支持，但建议保持系统更新至 Catalina 的最终安全补丁版本，以获得最佳兼容性和安全性。</li>
+<li>未来弃用：软件支持政策会随时间变化。如果未来 Homebrew 宣布不再支持 Catalina，你将无法再通过官方脚本安装最新版，届时可能需要停留在最后一个支持 Catalina 的 Homebrew 版本。但截至目前（2026年6月），Catalina 仍被支持。</li>
+</ul>
+</li>
+</ol>
+<p>总结：
+macOS Catalina 可以使用 Homebrew 的当前最新稳定版本。 你只需按照官方指南安装即可，无需担心版本限制问题（前提是你是 Intel 芯片 Mac）。<br>参考资料<br>[1] <a href="https://blog.csdn.net/weixin_31710909/article/details/161635833">MacOS Catalina/Big Sur 用户必看:告别Bash 3.2,用Homebrew一键升级到5.x最新版-CSDN博客 - CSDN博客</a><br>[2] <a href="https://blog.csdn.net/sunyuhua_keyboard/article/details/149516824">Mac上安装Homebrew的详细步骤 - CSDN博客</a><br>[3] <a href="https://blog.csdn.net/weixin_31528001/article/details/161434164">MacOS Catalina/Big Sur用户必看:告别Bash 3.2,用Homebrew一键升级到Bash 5.x的完整指南 - CSDN博客</a><br>[4] <a href="https://blog.csdn.net/weixin_28839601/article/details/159568228">MacOS新手必看:Homebrew安装与基础使用指南 - CSDN博客</a><br>[5] <a href="https://blog.csdn.net/root9/article/details/149521914">MacOS新手必看:Homebrew安装全攻略(附常见问题解决方案) - CSDN博客</a><br>[6] <a href="https://formulae.brew.sh/cask/badlion-client">Homebrew Formulae - formulae.brew.sh</a><br>[7] <a href="https://formulae.brew.sh/cask/teamviewer">teamviewer - formulae.brew.sh</a><br>[8] <a href="https://post.smzdm.com/p/agg6pood/">Homebrew 6.0 全面拥抱 Apple Silicon,Intel 用户只剩一年缓冲期 - 什么值得买</a><br>[9] <a href="https://news.qq.com/rain/a/20260612A07QDI00">开源包管理软件 Homebrew 6.0.0 发布,引入第三方软件源信任机制 - 腾讯网</a><br>[10] <a href="https://blog.csdn.net/weixin_33250328/article/details/161434163">MacOS Catalina/Big Sur用户必看:告别老掉牙的Bash 3.2,用Homebrew一键升级到5.0+新版本 - CSDN博客</a><br>[11] <a href="https://blog.csdn.net/weixin_33178839/article/details/161434171">MacOS Catalina/Big Sur用户必看:告别老掉牙的Bash 3.2,用Homebrew一键升级到Bash 5.x - CSDN博客</a><br>[12] <a href="https://blog.csdn.net/qq_47188967/article/details/136868179">MacOS安装Homebrew教程 - CSDN博客</a><br>[13] <a href="https://blog.csdn.net/weixin_28829325/article/details/158937906">MacOS新手必看:Homebrew安装与基础使用全指南 - CSDN博客</a><br>[14] <a href="https://blog.csdn.net/weixin_28832121/article/details/158554567">MacOS新手必看:Homebrew安装与基础使用全指南 - CSDN博客</a><br>[15] <a href="https://blog.csdn.net/weixin_33270920/article/details/161403266">MacOS Catalina/Big Sur用户必看:告别Bash 3.2,手把手教你用Homebrew升级到Bash 5.x - CSDN博客</a><br>[16] <a href="https://zhuanlan.zhihu.com/p/2012118246917157241">🚀 在Mac上安装OpenClaw:保姆级图文教程 - 火山</a><br>[17] <a href="https://blog.csdn.net/occamo/article/details/113923984">【笔记16】MacBook安装Homebrew(macOS Catalina version10.15.7) - CSDN博客</a><br>[18] <a href="http://zhuanlan.zhihu.com/p/13085573002">macOS Catalina 10.15.7 (19H15) Boot ISO 原版可引导镜像下载 - sysin</a><br>[19] <a href="https://jianghu.taobao.com/guanglocal/47799_32cc8abe3ca7c543db7ac4beb616cef6">苹果macOS系统有哪些版本?从Catalina到Sonoma全解析 - 淘宝网</a><br>[20] <a href="https://support.apple.com/zh-cn/118458">macOS Catalina - 技术规格 - Apple</a><br>[21] <a href="https://baike.baidu.com/item/macOS%20Catalina/23541743">macOS Catalina - 百度百科</a><br><br>百度AI生成，内容仅供参考</p>
+
+</body>
+</html>
