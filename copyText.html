@@ -267,12 +267,12 @@
     <div class="container">
         <!-- Tabs Navigation -->
         <div class="tabs-nav">
-            <button class="tab-btn active" onclick="openTab('tab1')">接入组件文案</button>
-            <button class="tab-btn" onclick="openTab('tab2')">核心组件文案</button>
+            <button class="tab-btn active" onclick="openTab('tab2')">核心组件文案</button>
+            <button class="tab-btn" onclick="openTab('tab1')">接入组件文案</button>
         </div>
 
         <!-- Tab 1 Content -->
-        <div id="tab1" class="tab-content active">
+        <div id="tab1" class="tab-content">
             <div class="form-group">
                 <label for="name">接入组件名称</label>
                 <input type="text" id="name" placeholder="请输入组件名称">
@@ -290,7 +290,7 @@
 
             <div class="form-group">
                 <label for="othersText">其他要求</label>
-                <input type="text" id="othersText" placeholder="可选，默认为无">
+                <input type="text" id="othersText" value="生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名" placeholder="可选，默认为无">
             </div>
 
             <div class="form-group">
@@ -307,7 +307,7 @@
         </div>
 
         <!-- Tab 2 Content -->
-        <div id="tab2" class="tab-content">
+        <div id="tab2" class="tab-content active">
             <div class="form-group">
                 <label for="core_name">核心组件名称</label>
                 <input type="text" id="core_name" placeholder="请输入核心组件名称">
