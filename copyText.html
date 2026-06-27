@@ -1,17 +1,6 @@
-<!-- 生成以下功能的html单页面，不使用TailwindCSS，不引入Font，使用默认字体，标题为文案生成器
+<!-- 
+生成以下功能的html单页面，不使用TailwindCSS，不引入Font，使用默认字体，标题为文案生成器
 1、第一个标签页
-    - 一个输入框组件，名字：接入组件名称，id为name，默认值为空
-    - 两个输入域组件，名字分别为业务功能描述和业务流程文字描述，id分别为function_description和text_description，默认值为空
-    - 一个输入框组件，名字：其他要求，id为othersText，默认值为空
-    - 一个生成按钮，根据输入框和输入域生成类似文本（只读）：
-    根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对XXXX(id为name值填入)的定义，不少于300字，不用分段
-    业务功能描述：XXXX（id为function_description值填入）
-    业务流程文字描述：XXXX（id为text_description值填入）
-    其他要求：默认为无（若id为othersText值为空，默认为无，有值则填写入id为othersText的值）
-    - 一个复制按钮，可以复制根据要求生成的文本
-    - 一个清空按钮，可以清空输入框和输入域的文本
-    - 一个跳转按钮，可以跳转浏览器到百度网页 
-2、第二个标签页
     - 一个输入框组件，名字：核心组件名称，id为core_name,默认值为空
     - 一个输入域组件，名字：子组件名称，id为core_subName,默认值为空
     - 一个输入框组件，名字：其他要求，id为core_othersText，默认值为‘生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名’
@@ -21,7 +10,20 @@
     其他要求：默认为无（若id为core_othersText值为空，默认为无，有值则填写入id为core_othersText的值）
     - 一个复制按钮，可以复制根据要求生成的文本
     - 一个清空按钮，可以清空输入框和输入域的文本
+    - 一个跳转按钮，可以跳转浏览器到百度网页     
+2、第二个标签页
+    - 一个输入框组件，名字：接入组件名称，id为name，默认值为空
+    - 两个输入域组件，名字分别为业务功能描述和业务流程文字描述，id分别为function_description和text_description，默认值为空
+    - 一个输入框组件，名字：其他要求，id为othersText，默认值为‘生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名’
+    - 一个生成按钮，根据输入框和输入域生成类似文本（只读）：
+    根据业务功能描述和业务流程文字描述，对文本内容进行整理，生成一段对XXXX(id为name值填入)的定义，不少于300字，不用分段
+    业务功能描述：XXXX（id为function_description值填入）
+    业务流程文字描述：XXXX（id为text_description值填入）
+    其他要求：默认为无（若id为othersText值为空，默认为无，有值则填写入id为othersText的值）
+    - 一个复制按钮，可以复制根据要求生成的文本
+    - 一个清空按钮，可以清空输入框和输入域的文本
     - 一个跳转按钮，可以跳转浏览器到百度网页 
+
 补充要求：标签页之间相互独立，互不影响
 
 -->
@@ -34,7 +36,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文案生成器</title>
+    <title>低空文案生成器</title>
     <style>
         :root {
             --primary-color: #4a90e2;
@@ -413,10 +415,10 @@
             }
 
             navigator.clipboard.writeText(text).then(() => {
-                alert('已复制到剪贴板');
+                console.log('已复制到剪贴板');
             }).catch(err => {
                 console.error('复制失败: ', err);
-                alert('复制失败，请手动复制');
+                console.log('复制失败，请手动复制');
             });
         }
 
