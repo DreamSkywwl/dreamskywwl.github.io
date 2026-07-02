@@ -252,12 +252,12 @@
             const othersText = document.getElementById('aa_othersText').value.trim();
 
             if (!name && !subName && !ubName) {
-                alert('请至少填写一项内容以生成文案。');
+                // alert('请至少填写一项内容以生成文案。');
                 return;
             }
 
             const template = `在低空智能网联平台当中${name}：${subName}
-麻烦整理一下对以下功能的概念性定义和功能，每一个功能文字不超过400字
+麻烦整理一下对以下功能的概念性定义和功能，每一个功能文字不超过300字
 ${ubName}
 其他要求：${othersText}`;
 
@@ -269,7 +269,7 @@ ${ubName}
             const generatedText = document.getElementById('generatedText');
 
             if (!generatedText.value) {
-                alert('没有可复制的内容，请先生成文案。');
+                // alert('没有可复制的内容，请先生成文案。');
                 return;
             }
 
@@ -278,7 +278,7 @@ ${ubName}
 
             try {
                 document.execCommand('copy');
-                alert('文案已复制到剪贴板！');
+                // alert('文案已复制到剪贴板！');
             } catch (err) {
                 alert('复制失败，请手动复制。');
             }
