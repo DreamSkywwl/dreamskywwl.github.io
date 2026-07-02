@@ -238,7 +238,7 @@
             const othersText = document.getElementById('aa_othersText').value.trim();
 
             if (!ubNameRaw) {
-                alert('请填写功能列表文本。');
+                // alert('请填写功能列表文本。');
                 return;
             }
 
@@ -260,7 +260,7 @@
             const generatedText = document.getElementById('generatedText');
 
             if (!generatedText.value) {
-                alert('没有可复制的内容，请先生成文案。');
+                // alert('没有可复制的内容，请先生成文案。');
                 return;
             }
 
@@ -269,9 +269,9 @@
 
             try {
                 document.execCommand('copy');
-                alert('文案已复制到剪贴板！');
+                // alert('文案已复制到剪贴板！');
             } catch (err) {
-                alert('复制失败，请手动复制。');
+                // alert('复制失败，请手动复制。');
             }
         }
 
