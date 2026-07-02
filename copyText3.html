@@ -1,0 +1,293 @@
+<!-- 
+生成以下功能的html单页面，不使用TailwindCSS，不引入Font，使用默认字体，标题为文案生成器
+1、第一个卡片
+    - 一个输入域组件，名字：功能列表文本，id为aa_ubName,默认值为空
+    - 一个输入框组件，名字：其他要求，id为aa_othersText，默认值为‘生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名，不显示低空智能网联平台’
+    - 一个生成按钮，根据输入框和输入域生成类似文本（只读）：
+        请分别对id为aa_ubName的值（id为aa_ubName值填入，如果不含有‘、’则需要对core_subName值中换行符替换成‘、’）按照以下内容重新写一下
+        字段映射转换面向多源业务数据、基础资源数据、空域航线起降资源、主体档案、航空器与人员资质等数据的统一接入、治理、存储和资源化管理开展建设，重点完成相关对象的注册配置、标准化处理、规则校验、状态管理、结果入库和服务输出。字段映射转换用于补充完善数据清洗转换相关业务能力，形成可配置、可查询、可追溯、可集成的软件功能点。
+        其他要求：生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名，不显示低空智能网联平台
+    - 一个复制按钮，可以复制根据要求生成的文本
+    - 一个清空按钮，可以清空输入框和输入域的文本
+    - 一个跳转按钮，可以跳转浏览器到百度网页     
+
+
+补充要求：卡片之间相互独立，互不影响
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文案生成器</title>
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --primary-hover: #357abd;
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #e1e4e8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            font-family: inherit;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s, transform 0.1s;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .btn-generate {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-generate:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-copy {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .btn-copy:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-clear {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-clear:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-jump {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-jump:hover {
+            background-color: #d35400;
+        }
+
+        .result-area {
+            margin-top: 20px;
+        }
+
+        .result-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        #generatedText {
+            background-color: #f8f9fa;
+            color: #444;
+            height: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="card">
+            <h1>文案生成器</h1>
+
+            <div class="form-group">
+                <label for="aa_ubName">功能列表文本</label>
+                <textarea id="aa_ubName" placeholder="请输入功能列表文本，可用换行或顿号分隔"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="aa_othersText">其他要求</label>
+                <input type="text" id="aa_othersText" value="生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名，不显示低空智能网联平台">
+            </div>
+
+            <div class="button-group">
+                <button class="btn-generate" onclick="generateText()">生成文案</button>
+                <button class="btn-copy" onclick="copyText()">复制文案</button>
+                <button class="btn-clear" onclick="clearInputs()">清空输入</button>
+                <button class="btn-jump" onclick="jumpToBaidu()">跳转百度</button>
+            </div>
+
+            <div class="result-area">
+                <label class="result-label">生成结果（只读）：</label>
+                <textarea id="generatedText" readonly placeholder="点击生成按钮查看结果..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 生成文案函数
+        function generateText() {
+            const ubNameRaw = document.getElementById('aa_ubName').value.trim();
+            const othersText = document.getElementById('aa_othersText').value.trim();
+
+            if (!ubNameRaw) {
+                alert('请填写功能列表文本。');
+                return;
+            }
+
+            // 处理功能列表：如果不含有‘、’，则将换行符替换为‘、’
+            let processedUbName = ubNameRaw;
+            if (!processedUbName.includes('、')) {
+                processedUbName = processedUbName.replace(/\n/g, '、');
+            }
+
+            const template = `请分别对${processedUbName}按照以下内容重新写一下
+字段映射转换面向多源业务数据、基础资源数据、空域航线起降资源、主体档案、航空器与人员资质等数据的统一接入、治理、存储和资源化管理开展建设，重点完成相关对象的注册配置、标准化处理、规则校验、状态管理、结果入库和服务输出。字段映射转换用于补充完善数据清洗转换相关业务能力，形成可配置、可查询、可追溯、可集成的软件功能点。
+其他要求：${othersText}`;
+
+            document.getElementById('generatedText').value = template;
+        }
+
+        // 复制文案函数
+        function copyText() {
+            const generatedText = document.getElementById('generatedText');
+
+            if (!generatedText.value) {
+                alert('没有可复制的内容，请先生成文案。');
+                return;
+            }
+
+            generatedText.select();
+            generatedText.setSelectionRange(0, 99999); // 兼容移动端
+
+            try {
+                document.execCommand('copy');
+                alert('文案已复制到剪贴板！');
+            } catch (err) {
+                alert('复制失败，请手动复制。');
+            }
+        }
+
+        // 清空输入函数
+        function clearInputs() {
+            document.getElementById('aa_ubName').value = '';
+            document.getElementById('aa_othersText').value = '生成内容中删除核心XXXX单元，只显示XXXX单元，不显示任何地名，不显示低空智能网联平台';
+            document.getElementById('generatedText').value = '';
+        }
+
+        // 跳转百度函数
+        function jumpToBaidu() {
+            window.open('https://www.baidu.com', '_blank');
+        }
+    </script>
+
+</body>
+
+</html>
