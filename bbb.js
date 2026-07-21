@@ -35,7 +35,11 @@ let arr = [
     { name: 'Python_Code', url: 'https://dreamskywwl.github.io/python.html', category: 'other' },
     { name: '常用工具', url: 'https://dreamskywwl.github.io/copyContent.html', category: 'other' },
     { name: '文案生成器', url: 'https://dreamskywwl.github.io/copyText.html', category: 'other' },
-    { name: 'Github', url: 'https://github.com/DreamSkywwl', category: 'other' },
+    { name: 'Github', url: 'https://github.com/DreamSkywwl', category: 'code' },
+
+
+    
+    { name: 'Gitee', url: 'https://gitee.com', category: 'code' },
 
 ]
 
