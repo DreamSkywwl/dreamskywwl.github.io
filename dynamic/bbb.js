@@ -31,15 +31,16 @@ let arr = [
 
 
 
-    { name: '解析图片', url: 'https://dreamskywwl.github.io/downloadPic.html', category: 'other' },
-    { name: 'Python_Code', url: 'https://dreamskywwl.github.io/python.html', category: 'other' },
-    { name: '常用工具', url: 'https://dreamskywwl.github.io/copyContent.html', category: 'other' },
-    { name: '文案生成器', url: 'https://dreamskywwl.github.io/copyText.html', category: 'other' },
+    { name: '解析图片', url: 'https://dreamskywwl.github.io/dynamic/downloadPic.html', category: 'other' },
+    { name: 'Python_Code', url: 'https://dreamskywwl.github.io/dynamic/python.html', category: 'other' },
+    { name: '常用工具', url: 'https://dreamskywwl.github.io/dynamic/copyContent.html', category: 'other' },
+    { name: '文案生成器', url: 'https://dreamskywwl.github.io/dynamic/copyText.html', category: 'other' },
     { name: 'Github', url: 'https://github.com/DreamSkywwl', category: 'code' },
 
 
-    
+
     { name: 'Gitee', url: 'https://gitee.com', category: 'code' },
+    { name: 'element Plus', url: 'https://dreamskywwl.github.io/index.html', category: 'code' },
 
 ]
 

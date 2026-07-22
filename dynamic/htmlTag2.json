@@ -127,32 +127,44 @@
   },
   {
     "name": "解析图片",
-    "url": "https://dreamskywwl.github.io/downloadPic.html",
+    "url": "https://dreamskywwl.github.io/dynamic/downloadPic.html",
     "category": "other",
     "id": 22
   },
   {
     "name": "Python_Code",
-    "url": "https://dreamskywwl.github.io/python.html",
+    "url": "https://dreamskywwl.github.io/dynamic/python.html",
     "category": "other",
     "id": 23
   },
   {
     "name": "常用工具",
-    "url": "https://dreamskywwl.github.io/copyContent.html",
+    "url": "https://dreamskywwl.github.io/dynamic/copyContent.html",
     "category": "other",
     "id": 24
   },
   {
     "name": "文案生成器",
-    "url": "https://dreamskywwl.github.io/copyText.html",
+    "url": "https://dreamskywwl.github.io/dynamic/copyText.html",
     "category": "other",
     "id": 25
   },
   {
     "name": "Github",
     "url": "https://github.com/DreamSkywwl",
-    "category": "other",
+    "category": "code",
     "id": 26
+  },
+  {
+    "name": "Gitee",
+    "url": "https://gitee.com",
+    "category": "code",
+    "id": 27
+  },
+  {
+    "name": "element Plus",
+    "url": "https://dreamskywwl.github.io/index.html",
+    "category": "code",
+    "id": 28
   }
 ]
