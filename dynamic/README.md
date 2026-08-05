@@ -1,4 +1,4 @@
-### 1、markdown转化为html 需要替换mermaid插件地址
+### 1、markdown 转化为 html 需要替换 mermaid 插件地址
 
 ```html
 <!-- <script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script> -->

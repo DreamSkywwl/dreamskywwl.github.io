@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>中成药</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+    <style>
+        /* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+        /*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+        body {
+            font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+            font-size: var(--vscode-markdown-font-size, 14px);
+            padding: 0 26px;
+            line-height: var(--vscode-markdown-line-height, 22px);
+            word-wrap: break-word;
+        }
+
+        #code-csp-warning {
+            position: fixed;
+            top: 0;
+            right: 0;
+            color: white;
+            margin: 16px;
+            text-align: center;
+            font-size: 12px;
+            font-family: sans-serif;
+            background-color: #444444;
+            cursor: pointer;
+            padding: 6px;
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, .25);
+        }
+
+        #code-csp-warning:hover {
+            text-decoration: none;
+            background-color: #007acc;
+            box-shadow: 2px 2px 2px rgba(0, 0, 0, .25);
+        }
+
+        body.scrollBeyondLastLine {
+            margin-bottom: calc(100vh - 22px);
+        }
+
+        body.showEditorSelection .code-line {
+            position: relative;
+        }
+
+        body.showEditorSelection .code-active-line:before,
+        body.showEditorSelection .code-line:hover:before {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: -12px;
+            height: 100%;
+        }
+
+        body.showEditorSelection li.code-active-line:before,
+        body.showEditorSelection li.code-line:hover:before {
+            left: -30px;
+        }
+
+        .vscode-light.showEditorSelection .code-active-line:before {
+            border-left: 3px solid rgba(0, 0, 0, 0.15);
+        }
+
+        .vscode-light.showEditorSelection .code-line:hover:before {
+            border-left: 3px solid rgba(0, 0, 0, 0.40);
+        }
+
+        .vscode-light.showEditorSelection .code-line .code-line:hover:before {
+            border-left: none;
+        }
+
+        .vscode-dark.showEditorSelection .code-active-line:before {
+            border-left: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .vscode-dark.showEditorSelection .code-line:hover:before {
+            border-left: 3px solid rgba(255, 255, 255, 0.60);
+        }
+
+        .vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+            border-left: none;
+        }
+
+        .vscode-high-contrast.showEditorSelection .code-active-line:before {
+            border-left: 3px solid rgba(255, 160, 0, 0.7);
+        }
+
+        .vscode-high-contrast.showEditorSelection .code-line:hover:before {
+            border-left: 3px solid rgba(255, 160, 0, 1);
+        }
+
+        .vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+            border-left: none;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        a:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 1px solid -webkit-focus-ring-color;
+            outline-offset: -1px;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            border-bottom: 2px solid;
+        }
+
+        h1 {
+            padding-bottom: 0.3em;
+            line-height: 1.2;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-weight: normal;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        table>thead>tr>th {
+            text-align: left;
+            border-bottom: 1px solid;
+        }
+
+        table>thead>tr>th,
+        table>thead>tr>td,
+        table>tbody>tr>th,
+        table>tbody>tr>td {
+            padding: 5px 10px;
+        }
+
+        table>tbody>tr+tr>td {
+            border-top: 1px solid;
+        }
+
+        blockquote {
+            margin: 0 7px 0 5px;
+            padding: 0 16px 0 10px;
+            border-left-width: 5px;
+            border-left-style: solid;
+        }
+
+        code {
+            font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+            font-size: 1em;
+            line-height: 1.357em;
+        }
+
+        body.wordWrap pre {
+            white-space: pre-wrap;
+        }
+
+        pre:not(.hljs),
+        pre.hljs code>div {
+            padding: 16px;
+            border-radius: 3px;
+            overflow: auto;
+        }
+
+        pre code {
+            color: var(--vscode-editor-foreground);
+            tab-size: 4;
+        }
+
+        /** Theming */
+
+        .vscode-light pre {
+            background-color: rgba(220, 220, 220, 0.4);
+        }
+
+        .vscode-dark pre {
+            background-color: rgba(10, 10, 10, 0.4);
+        }
+
+        .vscode-high-contrast pre {
+            background-color: rgb(0, 0, 0);
+        }
+
+        .vscode-high-contrast h1 {
+            border-color: rgb(0, 0, 0);
+        }
+
+        .vscode-light table>thead>tr>th {
+            border-color: rgba(0, 0, 0, 0.69);
+        }
+
+        .vscode-dark table>thead>tr>th {
+            border-color: rgba(255, 255, 255, 0.69);
+        }
+
+        .vscode-light h1,
+        .vscode-light hr,
+        .vscode-light table>tbody>tr+tr>td {
+            border-color: rgba(0, 0, 0, 0.18);
+        }
+
+        .vscode-dark h1,
+        .vscode-dark hr,
+        .vscode-dark table>tbody>tr+tr>td {
+            border-color: rgba(255, 255, 255, 0.18);
+        }
+    </style>
+
+    <style>
+        /* Tomorrow Theme */
+        /* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+        /* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+        /* Tomorrow Comment */
+        .hljs-comment,
+        .hljs-quote {
+            color: #8e908c;
+        }
+
+        /* Tomorrow Red */
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-tag,
+        .hljs-name,
+        .hljs-selector-id,
+        .hljs-selector-class,
+        .hljs-regexp,
+        .hljs-deletion {
+            color: #c82829;
+        }
+
+        /* Tomorrow Orange */
+        .hljs-number,
+        .hljs-built_in,
+        .hljs-builtin-name,
+        .hljs-literal,
+        .hljs-type,
+        .hljs-params,
+        .hljs-meta,
+        .hljs-link {
+            color: #f5871f;
+        }
+
+        /* Tomorrow Yellow */
+        .hljs-attribute {
+            color: #eab700;
+        }
+
+        /* Tomorrow Green */
+        .hljs-string,
+        .hljs-symbol,
+        .hljs-bullet,
+        .hljs-addition {
+            color: #718c00;
+        }
+
+        /* Tomorrow Blue */
+        .hljs-title,
+        .hljs-section {
+            color: #4271ae;
+        }
+
+        /* Tomorrow Purple */
+        .hljs-keyword,
+        .hljs-selector-tag {
+            color: #8959a8;
+        }
+
+        .hljs {
+            display: block;
+            overflow-x: auto;
+            color: #4d4d4c;
+            padding: 0.5em;
+        }
+
+        .hljs-emphasis {
+            font-style: italic;
+        }
+
+        .hljs-strong {
+            font-weight: bold;
+        }
+    </style>
+
+    <style>
+        /*
+ * Markdown PDF CSS
+ */
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+            padding: 0 12px;
+        }
+
+        pre {
+            background-color: #f8f8f8;
+            border: 1px solid #cccccc;
+            border-radius: 3px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            overflow-wrap: break-word;
+        }
+
+        pre:not(.hljs) {
+            padding: 23px;
+            line-height: 19px;
+        }
+
+        blockquote {
+            background: rgba(127, 127, 127, 0.1);
+            border-color: rgba(0, 122, 204, 0.5);
+        }
+
+        .emoji {
+            height: 1.4em;
+        }
+
+        code {
+            font-size: 14px;
+            line-height: 19px;
+        }
+
+        /* for inline code */
+        :not(pre):not(.hljs)>code {
+            color: #C9AE75;
+            /* Change the old color so it seems less like an error */
+            font-size: inherit;
+        }
+
+        /* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+        .page {
+            page-break-after: always;
+        }
+    </style>
+
+    <script src="./npm/mermaid@11.14.0.min.js"></script>
+</head>
+
+<body>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+                ? 'dark'
+                : 'default'
+        });
+    </script>
+    <p>以下是截至2026年7月，经国家药监局批准、具有明确标注的合法含西药成分中成药完整清单，按治疗领域分类整理，涵盖主要品种、用途及所含西药成分。本表基于《中国药典》、国家医保目录及权威医学文献综合整理，排除非法添加产品（如违规添加地西泮、二甲双胍等），仅收录经审批的中西药复方制剂。
+    </p>
+    <table>
+        <thead>
+            <tr>
+                <th>中成药名称</th>
+                <th>主要用途</th>
+                <th>添加的西药成分</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>抗感冒类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>感冒灵颗粒</td>
+                <td>缓解风热感冒引起的发热、头痛、鼻塞、流涕、咽痛</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、咖啡因</td>
+            </tr>
+            <tr>
+                <td>维C银翘片</td>
+                <td>外感风热所致流行性感冒，症见发热、头痛、咳嗽、口干、咽喉痛</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、维生素C</td>
+            </tr>
+            <tr>
+                <td>复方感冒灵片</td>
+                <td>风热感冒伴发热、头身痛、咽红肿痛、痰黄</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、咖啡因</td>
+            </tr>
+            <tr>
+                <td>感冒清片</td>
+                <td>风热感冒发热、头痛、鼻塞、咽肿痛</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、盐酸吗啉胍</td>
+            </tr>
+            <tr>
+                <td>金感胶囊</td>
+                <td>普通感冒、流感所致发热、头痛、鼻塞、咽痛</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、盐酸金刚烷胺</td>
+            </tr>
+            <tr>
+                <td>速感宁胶囊</td>
+                <td>风热感冒、上呼吸道感染引起的头痛、鼻塞、咳嗽痰黄</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏、维生素C</td>
+            </tr>
+            <tr>
+                <td>新复方大青叶片</td>
+                <td>伤风感冒、发热头痛、骨节酸痛</td>
+                <td>对乙酰氨基酚、咖啡因、异戊巴比妥、维生素C</td>
+            </tr>
+            <tr>
+                <td>扑感片</td>
+                <td>风寒型感冒、流感引起的畏寒、头痛、流清涕</td>
+                <td>对乙酰氨基酚、马来酸氯苯那敏</td>
+            </tr>
+            <tr>
+                <td>重感冒灵片</td>
+                <td>重症感冒、高热、四肢酸痛、咽痛</td>
+                <td>安乃近、马来酸氯苯那敏</td>
+            </tr>
+            <tr>
+                <td>降压类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>珍菊降压片</td>
+                <td>轻中度高血压，头晕、头痛</td>
+                <td>盐酸可乐定、氢氯噻嗪</td>
+            </tr>
+            <tr>
+                <td>降压避风片</td>
+                <td>原发性高血压、眩晕</td>
+                <td>氢氯噻嗪</td>
+            </tr>
+            <tr>
+                <td>脉君安片</td>
+                <td>高血压、冠心病所致头晕、心慌</td>
+                <td>氢氯噻嗪</td>
+            </tr>
+            <tr>
+                <td>复方罗布麻片</td>
+                <td>高血压、头痛、失眠</td>
+                <td>氢氯噻嗪、野菊花浸膏、罗布麻叶</td>
+            </tr>
+            <tr>
+                <td>降糖类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>消渴丸</td>
+                <td>气阴两虚型2型糖尿病，多饮、多尿、乏力</td>
+                <td>格列本脲</td>
+            </tr>
+            <tr>
+                <td>消糖灵胶囊</td>
+                <td>糖尿病口渴、多食、多尿</td>
+                <td>格列本脲</td>
+            </tr>
+            <tr>
+                <td>十味降糖颗粒</td>
+                <td>2型糖尿病气阴两虚证</td>
+                <td>格列本脲</td>
+            </tr>
+            <tr>
+                <td>消化系统类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>复方陈香胃片</td>
+                <td>胃溃疡、胃酸过多、慢性胃炎</td>
+                <td>碳酸氢钠、重质碳酸镁、氢氧化铝</td>
+            </tr>
+            <tr>
+                <td>神曲胃痛片（胶囊）</td>
+                <td>胃痛、胃酸过多、消化不良</td>
+                <td>氢氧化铝、碳酸氢钠</td>
+            </tr>
+            <tr>
+                <td>活胃散</td>
+                <td>胃脘胀痛、呕吐吞酸</td>
+                <td>碳酸氢钠、碳酸镁</td>
+            </tr>
+            <tr>
+                <td>复方甘草片</td>
+                <td>咳嗽、咳痰、咽喉肿痛</td>
+                <td>阿片粉（含吗啡类生物碱）</td>
+            </tr>
+            <tr>
+                <td>呼吸系统类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>咳特灵胶囊</td>
+                <td>慢性支气管炎、咳喘</td>
+                <td>马来酸氯苯那敏</td>
+            </tr>
+            <tr>
+                <td>复方咳喘灵胶囊</td>
+                <td>支气管哮喘、慢性支气管炎咳喘</td>
+                <td>盐酸克仑特罗</td>
+            </tr>
+            <tr>
+                <td>喘舒片</td>
+                <td>哮喘、肺气肿引起的喘息</td>
+                <td>盐酸克仑特罗</td>
+            </tr>
+            <tr>
+                <td>清咳平喘片</td>
+                <td>痰热郁肺型急性支气管炎</td>
+                <td>盐酸异丙嗪</td>
+            </tr>
+            <tr>
+                <td>皮肤与过敏类</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>鼻炎康片</td>
+                <td>急慢性鼻炎、过敏性鼻炎</td>
+                <td>马来酸氯苯那敏</td>
+            </tr>
+            <tr>
+                <td>复方酮康唑发用洗剂</td>
+                <td>头皮糠疹、脂溢性皮炎、花斑癣</td>
+                <td>酮康唑、丙酸氯倍他索</td>
+            </tr>
+            <tr>
+                <td>足光散</td>
+                <td>足癣、角化型手足癣、臭汗症</td>
+                <td>水杨酸、苯甲酸、硼酸、苦参</td>
+            </tr>
+            <tr>
+                <td>其他系统</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>珍合灵片</td>
+                <td>心悸、失眠、心律失常（部分仿制药违规添加地西泮，非官方批准）</td>
+                <td>无（纯中药）</td>
+            </tr>
+            <tr>
+                <td>脑力静糖浆</td>
+                <td>神经衰弱、失眠健忘</td>
+                <td>甘油磷酸钠、维生素B₁、B₂、B₆</td>
+            </tr>
+            <tr>
+                <td>更年舒片</td>
+                <td>更年期综合征、潮热、心悸</td>
+                <td>谷维素、维生素B₆</td>
+            </tr>
+            <tr>
+                <td>力加寿片</td>
+                <td>体倦乏力、记忆力减退</td>
+                <td>维生素E</td>
+            </tr>
+            <tr>
+                <td>骨筋丸胶囊</td>
+                <td>骨关节炎、颈椎病、腰腿痛</td>
+                <td>吲哚美辛</td>
+            </tr>
+            <tr>
+                <td>腰息痛胶囊</td>
+                <td>风湿性关节炎、腰肌劳损</td>
+                <td>对乙酰氨基酚</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr>
+    <p>⚠️ 重要用药安全提示（基于国家药监局2026年最新通报）</p>
+    <ul>
+        <li>严禁叠加用药：含对乙酰氨基酚的中成药（如感冒灵、维C银翘片）不可与泰诺、扑热息痛等西药同服，否则可致急性肝衰竭。</li>
+        <li>低血糖风险：含格列本脲的消渴丸、消糖灵胶囊，禁用于1型糖尿病、孕妇、肝肾功能不全者，服药期间需监测血糖。</li>
+        <li>嗜睡禁驾：含马来酸氯苯那敏的药品（如鼻炎康、咳特灵）可致嗜睡，服药后禁止驾驶、高空作业。</li>
+        <li>电解质紊乱：含氢氯噻嗪的降压药长期使用可致低钾、高尿酸，痛风患者慎用。</li>
+        <li>精神药品禁用：地西泮、安乃近、布洛芬等为处方药，非法添加于中药液或胶囊中属假药，已有多起刑事判例（如石家庄普泽中医院案）。</li>
+    </ul>
+    <blockquote>
+        <p>📌 用药建议：购买中成药时，请务必查看说明书【成分】栏，若含“对乙酰氨基酚”“格列本脲”等字样，即为中西复方制剂，不可视为“纯中药”。建议在药师指导下使用，避免自行联用同类西药。</p>
+    </blockquote>
+    <p><br>参考资料<br>[1] <a
+            href="https://mp.weixin.qq.com/s?__biz=MjM5MzY1NjIyOQ==&amp;mid=2649438347&amp;idx=4&amp;sn=ff22dfbafa9ded1f2aa1f85e0ba4650e&amp;chksm=bf0d533382765bce95cfdbbec80bd067acab7d806bc03415a342ce164189c5956e0e0e4f2a4e&amp;scene=27">超全总结:110种含西药的中成药!
+            - 微信公众平台</a><br>[2] <a
+            href="http://zx.zxy.hunanzx.gov.cn/szxapp/1/802/5926/content_1106852.html">1396种中成药纳入2025年国家医保药品目录 -
+            政协云-资讯</a><br>[3] <a
+            href="https://www.gov.cn/xinwen/2017-02/23/5170392/files/2d07f9cee41c4df899b52963d50cc6fd.docx">凡例 -
+            中国政府网</a><br>[4] <a href="https://m.163.com/dy/article/K0666MAI05523RSJ.html">部分明确含有化学药(西药)成份的中成药 -
+            老头和你随便聊聊</a><br>[5] <a
+            href="https://baijiahao.baidu.com/s?id=1829088339841401364&amp;wfr=spider&amp;for=pc">157个中成药大蜕变!独家品种成“爆款”,达仁堂、步长、华润发威,中医药标准化再升级
+            - 新浪财经</a><br>[6] <a
+            href="https://m.book118.com/html/2024/1001/8070071137006131.shtm">含西药或化学药物成分的中成药一览表(值得收藏).pdf 9页 -
+            原创力文档</a><br>[7] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzIyNzI1NjU5OA==&amp;mid=2248044746&amp;idx=2&amp;sn=7b78570fa3496997d960c82c117b9bb7&amp;chksm=e9605687b747ddd96ecd8337fe729f03a9ba1d8f6c6f57da6548270dcfed4e5ae310cae019f7&amp;scene=27">​为什么很多中药要添加西药?有人说中药不添西药就治不了病,就无效!附110种含西药的中成药
+            - 微信公众平台</a><br>[8] <a href="https://www.layy.cn/yykp/info.aspx?itemid=23528">盘点那些含有西药成分的中成药 -
+            六安市人民医院</a><br>[9] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzI2NzI0NzcwOQ==&amp;mid=2247484997&amp;idx=1&amp;sn=65520ef6961606056b54c3e4c577c445&amp;chksm=ebf950896a536de4f7f7e76c59914180877c8f16737d18256fafa9e7ab894c94d3b8db3b7116&amp;scene=27">药师科普:110种含西药的中成药(功效及西药成分)
+            - 微信公众平台</a><br>[10] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzIwMzEwNzc1Nw==&amp;mid=2650732530&amp;idx=6&amp;sn=b53eddade2f8bb69c1d814f536a51a7a&amp;chksm=8f61b301ac1abbde3dce61b9b45ef63ab31f69e64ddab5607ec500481ac266892ef3cf948206&amp;scene=27">【杏林科普说】中西合璧的中成药——西药成分大揭秘
+            - 微信公众平台</a><br>[11] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzU5NTk1NDA5NA==&amp;mid=2247496415&amp;idx=1&amp;sn=e272a48466d08e73505ad3c87b94a22c&amp;chksm=fe68a21ec91f2b0863f01fc638547353598ef568f2de45221984cea43cb0868351ee1f06aa24&amp;scene=27">超全总结:110种含西药的中成药!
+            - 妙手云医</a><br>[12] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzIzNjUyMDQ2Nw==&amp;mid=2247505972&amp;idx=1&amp;sn=0cf0439a1e9833509394aa5f175c1dcc&amp;chksm=e9cc28ef83596610903645fa9a619e31196eb03a1a4230b8575bb12f3a09e21f101f666c13de&amp;scene=27">【好心药师,健康随行】中成药里“藏”着西药
+            - 广东茂名市中医院</a><br>[13] <a href="http://www.zjda.com/facade/article!detail.shtml?id=33">中成药中添加西药的现状分析与思考 -
+            浙江药师网</a><br>[14] <a
+            href="https://mp.weixin.qq.com/s?__biz=MzI4NTY0MjkwMw==&amp;mid=2247525517&amp;idx=1&amp;sn=d91015819d6aa15f96ccba8475db5928&amp;chksm=ea74900fdd72daf8bcdadaa24f855b17d39f628a802adc258662d6c147a80ceb4e3f9fab6eaf&amp;scene=27">【健康科普】中成药中的“隐形”西药,您知道吗?
+            - 微信公众平台</a><br>[15] <a href="https://m-mip.39.net/drug/mipso_1249563.html">慎防!中成药违规添加西药成分 -
+            39健康网</a><br>[16] <a
+            href="https://mp.weixin.qq.com/s?__biz=MjM5OTExMjYwMA==&amp;mid=2670348237&amp;idx=3&amp;sn=ceebafa9a232643c0e5df999541e9923&amp;chksm=bdbd8acd40553dfe89d075f8790356c91c5bb0ba391544d7c425d13cdd9bbfc4136448489517&amp;scene=27">“食品药品违法掺西药”乱象如何破解
+            - 微信公众平台</a><br>[17] <a
+            href="https://mp.weixin.qq.com/s?__biz=MjM5MDUzNDM4MA==&amp;mid=2656096390&amp;idx=3&amp;sn=eb2c1a96cf569149ea8995ae3dc827fd&amp;chksm=bc95442cc061949c4d96bef9547e6a85daaf65fe0c1569170e9d77b644b7f041b1df52166a74&amp;scene=27">判了!廉江一黑心商家竟在中草药里加西药,致34名患者出现不良反应…
+            - 微信公众平台</a><br>[18] <a
+            href="https://baijiahao.baidu.com/s?id=1853754122787675119&amp;wfr=spider&amp;for=pc">一医院在中药液中添加安眠药,60名患者反映“喝完药就发困”!最新进展:还存在非法行医,已吊销执照,罚款10万元
+            - 环球网</a><br>[19] <a href="https://weibo.com/6445965072/Psx5uuOiU">#官方通报中药里被指检出西药成分# 中药... 来自火山口的风车 - 微博 -
+            火山口的风车</a><br><br>百度AI生成，内容仅供参考</p>
+
+</body>
+
+</html>
