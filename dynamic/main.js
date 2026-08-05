@@ -46,6 +46,7 @@ let arr = [
     { name: '中成药介绍', url: 'https://dreamskywwl.github.io/dynamic/html/TCM.html', category: 'other' },
     { name: '软件推荐', url: 'https://dreamskywwl.github.io/dynamic/html/soft.html', category: 'other' },
     { name: 'githubFast', url: 'https://dreamskywwl.github.io/dynamic/html/githubFast.html', category: 'other' },
+    { name: '代码片段生成器', url: 'https://dreamskywwl.github.io/dynamic/html/snippet-generator.html', category: 'other' },
 
 ]
 

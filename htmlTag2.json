@@ -1,0 +1,188 @@
+[
+  {
+    "name": "公司官网",
+    "url": "https://office.inspur.com/",
+    "category": "work",
+    "id": 1
+  },
+  {
+    "name": "工时登记",
+    "url": "https://devops.inspur.com/",
+    "category": "work",
+    "id": 2
+  },
+  {
+    "name": "百度搜索",
+    "url": "https://www.baidu.com/",
+    "category": "search",
+    "id": 3
+  },
+  {
+    "name": "百度翻译",
+    "url": "https://fanyi.baidu.com/mtpe-individual/transText#/",
+    "category": "search",
+    "id": 4
+  },
+  {
+    "name": "百度文心助手",
+    "url": "https://chat.baidu.com/search?isShowHello=1&extParams=%7B%22out_enter_type%22%3A%22home_aiinput_askai%22%2C%22enter_type%22%3A%22sidebar_dialog%22%7D",
+    "category": "search",
+    "id": 5
+  },
+  {
+    "name": "必应搜索",
+    "url": "https://cn.bing.com/",
+    "category": "search",
+    "id": 6
+  },
+  {
+    "name": "百度地图",
+    "url": "https://map.baidu.com/",
+    "category": "search",
+    "id": 7
+  },
+  {
+    "name": "豆包AI",
+    "url": "https://www.doubao.com/chat/",
+    "category": "search",
+    "id": 8
+  },
+  {
+    "name": "JSON在线",
+    "url": "https://www.bejson.com/jsoneditoronline/",
+    "category": "dev",
+    "id": 9
+  },
+  {
+    "name": "随机密码",
+    "url": "https://suijimimashengcheng.bmcx.com/",
+    "category": "dev",
+    "id": 10
+  },
+  {
+    "name": "调色板",
+    "url": "https://www.bejson.com/ui/getcolor/",
+    "category": "dev",
+    "id": 11
+  },
+  {
+    "name": "草料二维码",
+    "url": "https://cli.im/",
+    "category": "dev",
+    "id": 12
+  },
+  {
+    "name": "阿里网盘",
+    "url": "https://www.aliyundrive.com/drive/home",
+    "category": "life",
+    "id": 13
+  },
+  {
+    "name": "百度网盘",
+    "url": "https://pan.baidu.com/disk/main#/index?category=all",
+    "category": "life",
+    "id": 14
+  },
+  {
+    "name": "夸克网盘",
+    "url": "https://pan.quark.cn/list#/list/all",
+    "category": "life",
+    "id": 15
+  },
+  {
+    "name": "天气预报",
+    "url": "https://tianqi.moji.com/",
+    "category": "life",
+    "id": 16
+  },
+  {
+    "name": "知乎",
+    "url": "https://www.zhihu.com/",
+    "category": "study",
+    "id": 17
+  },
+  {
+    "name": "掘金",
+    "url": "https://juejin.cn/",
+    "category": "study",
+    "id": 18
+  },
+  {
+    "name": "HelloGithub",
+    "url": "https://hellogithub.com/",
+    "category": "study",
+    "id": 19
+  },
+  {
+    "name": "山东联通",
+    "url": "https://www.10010.com/wt_service_web/index.html#/",
+    "category": "study",
+    "id": 20
+  },
+  {
+    "name": "uniapp",
+    "url": "https://uniapp.dcloud.net.cn/",
+    "category": "study",
+    "id": 21
+  },
+  {
+    "name": "解析图片",
+    "url": "https://dreamskywwl.github.io/dynamic/html/downloadPic.html",
+    "category": "other",
+    "id": 22
+  },
+  {
+    "name": "Python_Code",
+    "url": "https://dreamskywwl.github.io/dynamic/html/python.html",
+    "category": "other",
+    "id": 23
+  },
+  {
+    "name": "常用工具",
+    "url": "https://dreamskywwl.github.io/dynamic/html/copyContent.html",
+    "category": "other",
+    "id": 24
+  },
+  {
+    "name": "Github",
+    "url": "https://github.com/DreamSkywwl",
+    "category": "code",
+    "id": 25
+  },
+  {
+    "name": "Gitee",
+    "url": "https://gitee.com",
+    "category": "code",
+    "id": 26
+  },
+  {
+    "name": "element Plus",
+    "url": "https://dreamskywwl.github.io/zh-CN",
+    "category": "code",
+    "id": 27
+  },
+  {
+    "name": "中成药介绍",
+    "url": "https://dreamskywwl.github.io/dynamic/html/TCM.html",
+    "category": "other",
+    "id": 28
+  },
+  {
+    "name": "软件推荐",
+    "url": "https://dreamskywwl.github.io/dynamic/html/soft.html",
+    "category": "other",
+    "id": 29
+  },
+  {
+    "name": "githubFast",
+    "url": "https://dreamskywwl.github.io/dynamic/html/githubFast.html",
+    "category": "other",
+    "id": 30
+  },
+  {
+    "name": "代码片段生成器",
+    "url": "https://dreamskywwl.github.io/dynamic/html/snippet-generator.html",
+    "category": "other",
+    "id": 31
+  }
+]

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>代码片段生成器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #f7f8fa;
+            --panel: #ffffff;
+            --border: #e1e4e8;
+            --text: #24292e;
+            --muted: #6a737d;
+            --primary: #0366d6;
+            --primary-hover: #0250a3;
+            --code-bg: #1e1e1e;
+            --code-text: #d4d4d4;
+            --accent: #28a745;
+            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        html,
+        body {
+            height: 100%;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background: var(--panel);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        header h1 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        header h1 span {
+            color: var(--primary);
+        }
+
+        header .meta {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        header .meta a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        header .meta a:hover {
+            text-decoration: underline;
+        }
+
+        /* Main layout */
+        main {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            padding: 20px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+            font-size: 14px;
+            background: #fafbfc;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-body {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Form elements */
+        .field {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 14px;
+            background: #fff;
+            color: var(--text);
+            transition: border-color 0.15s, box-shadow 0.15s;
+        }
+
+        input[type="text"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 260px;
+            flex: 1;
+            tab-size: 2;
+            line-height: 1.55;
+        }
+
+        .hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: -4px;
+        }
+
+        .hint code {
+            background: #f1f3f5;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: var(--primary);
+        }
+
+        /* Mode switcher */
+        .mode-switcher {
+            display: inline-flex;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .mode-btn {
+            padding: 7px 14px;
+            border: none;
+            background: #fff;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            color: var(--text);
+            transition: background 0.15s, color 0.15s;
+            border-right: 1px solid var(--border);
+        }
+
+        .mode-btn:last-child {
+            border-right: none;
+        }
+
+        .mode-btn:hover {
+            background: #f1f3f5;
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        /* Output area */
+        .output-wrapper {
+            background: var(--code-bg);
+            border-radius: 6px;
+            flex: 1;
+            overflow: auto;
+            position: relative;
+            min-height: 300px;
+        }
+
+        pre.output {
+            color: var(--code-text);
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 13px;
+            padding: 16px;
+            line-height: 1.6;
+            white-space: pre;
+            margin: 0;
+        }
+
+        /* Syntax-like coloring */
+        .tok-tag {
+            color: #569cd6;
+        }
+
+        .tok-attr {
+            color: #9cdcfe;
+        }
+
+        .tok-str {
+            color: #ce9178;
+        }
+
+        .tok-key {
+            color: #c586c0;
+        }
+
+        .tok-comment {
+            color: #6a9955;
+        }
+
+        .tok-punct {
+            color: #d4d4d4;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .copy-btn.copied {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* Footer info */
+        footer {
+            padding: 12px 24px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            background: var(--panel);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            main {
+                grid-template-columns: 1fr;
+                overflow-y: auto;
+                height: auto;
+            }
+
+            body {
+                height: auto;
+                min-height: 100vh;
+            }
+
+            .panel-body {
+                max-height: none;
+            }
+
+            textarea {
+                min-height: 180px;
+            }
+
+            .output-wrapper {
+                min-height: 220px;
+            }
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: #24292e;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s, transform 0.2s;
+            z-index: 999;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Link style inside hint */
+        .more-info {
+            font-size: 12px;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .more-info:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>💻 <span>代码片段生成器</span> </h1>
+        <div class="meta">
+            参考 <a href="https://snippet-generator.app/" target="_blank" rel="noopener">snippet-generator.app</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- INPUT PANEL -->
+        <section class="panel">
+            <div class="panel-header">
+                <span>✏️ 输入片段信息</span>
+            </div>
+            <div class="panel-body">
+                <div class="field">
+                    <label for="description">描述</label>
+                    <input type="text" id="description" placeholder="例：JavaScript console.log 输出" value="">
+                    <div class="hint">片段的描述，将作为命令面板中的显示名</div>
+                </div>
+
+                <div class="field">
+                    <label for="tabtrigger">触发词</label>
+                    <input type="text" id="tabtrigger" placeholder="例：log" value="">
+                    <div class="hint">在编辑器中输入触发词后按 <code>Tab</code> 展开片段</div>
+                </div>
+
+                <div class="field" style="flex:1; display:flex; flex-direction:column;">
+                    <label for="snippet">代码片段</label>
+                    <textarea id="snippet" spellcheck="false"></textarea>
+                    <div class="hint">
+                        使用 <code>${1:label}</code> 定义光标停留点（tabstops），<code>${0}</code> 为最终光标位置。
+                        <a class="more-info"
+                            href="https://code.visualstudio.com/docs/editor/userdefinedsnippets#_snippet-syntax"
+                            target="_blank" rel="noopener">More info</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- OUTPUT PANEL -->
+        <section class="panel">
+            <div class="panel-header">
+                <span>📦 生成结果</span>
+                <div class="mode-switcher" id="modeSwitcher">
+                    <button class="mode-btn active" data-mode="vscode">VSCode</button>
+                    <button class="mode-btn" data-mode="zed">Zed</button>
+                    <button class="mode-btn" data-mode="sublime">Sublime Text</button>
+                    <button class="mode-btn" data-mode="atom">Atom</button>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="output-wrapper">
+                    <pre class="output" id="output"></pre>
+                    <button class="copy-btn" id="copyBtn">Copy snippet</button>
+                </div>
+                <div class="hint" id="usageHint">
+                    VSCode：打开命令面板 → 「Configure User Snippets」→ 选择语言，将内容粘贴到对应的 JSON 文件中。
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        💡 本工具纯前端实现，无需联网；数据仅存在本地内存中，刷新即清空。支持 VSCode / Zed / Sublime Text / Atom 四种主流编辑器片段格式。
+    </footer>
+
+    <div class="toast" id="toast">已复制到剪贴板 ✅</div>
+
+    <script>
+        (function () {
+            'use strict';
+
+            const $ = id => document.getElementById(id);
+            const descEl = $('description');
+            const trigEl = $('tabtrigger');
+            const snipEl = $('snippet');
+            const outEl = $('output');
+            const copyBtn = $('copyBtn');
+            const modeBtns = document.querySelectorAll('.mode-btn');
+            const usageHint = $('usageHint');
+            const toast = $('toast');
+
+            let currentMode = 'vscode';
+
+            /* ---------- Core generation ---------- */
+
+            // Escape for JSON string value
+            function escapeJson(str) {
+                return str
+                    .replace(/\\/g, '\\\\')
+                    .replace(/"/g, '\\"')
+                    .replace(/\t/g, '\\t')
+                    .split('\n')
+                    .join('\\n');
+            }
+
+            // Escape for CDATA content (Sublime / Atom) — XML/CDATA doesn't need much escaping,
+            // but we escape <![CDATA[ sequence if present in source.
+            function escapeCdata(str) {
+                return str.replace(/\]\]>/g, ']]]]><![CDATA[>');
+            }
+
+            // Escape HTML entities for attribute values
+            function escapeAttr(str) {
+                return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            // Convert snippet body to JSON body array lines (VSCode/Zed)
+            function toJsonBodyLines(snippet) {
+                return snippet.split('\n').map(line => '"' + escapeJson(line) + '"');
+            }
+
+            function generateVSCode(desc, trigger, snippet) {
+                const key = desc || trigger || 'snippet';
+                const bodyLines = toJsonBodyLines(snippet);
+                return `{
+  "${escapeJson(key)}": {
+    "prefix": "${escapeJson(trigger)}",
+    "body": [
+      ${bodyLines.join(',\n      ')}
+    ],
+    "description": "${escapeJson(desc)}"
+  }
+}`;
+            }
+
+            // Zed format is essentially the same JSON structure as VSCode snippets
+            function generateZed(desc, trigger, snippet) {
+                const key = desc || trigger || 'snippet';
+                const bodyLines = toJsonBodyLines(snippet);
+                return `// Zed snippets (snippets.json)
+{
+  "${escapeJson(key)}": {
+    "prefix": "${escapeJson(trigger)}",
+    "body": [
+      ${bodyLines.join(',\n      ')}
+    ],
+    "description": "${escapeJson(desc)}"
+  }
+}`;
+            }
+
+            // Sublime Text: .sublime-snippet XML
+            function generateSublime(desc, trigger, snippet) {
+                // The snippet body in Sublime uses raw text inside <![CDATA[ ... ]]>.
+                // Tab stops syntax is the same (${1:label}, $0).
+                // Lines must be preserved as-is.
+                return `<snippet>
+  <content><![CDATA[
+${snippet}
+]]></content>
+  <tabTrigger>${escapeHtml(trigger)}</tabTrigger>
+  <description>${escapeHtml(desc)}</description>
+  <!-- <scope>source.js</scope> -->
+</snippet>`;
+            }
+
+            // Atom: .cson snippet format (similar to TextMate)
+            // Generic wrapper:
+            // '.source.js':
+            //   'description':
+            //     'prefix': 'trigger'
+            //     'body': """
+            //       multi-line body
+            //     """
+            function generateAtom(desc, trigger, snippet) {
+                // We use "source" as a generic scope placeholder; user can customize.
+                const escapedBody = snippet.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+                // Use triple-quoted string in CSON (CoffeeScript-style heredoc)
+                const bodyLines = snippet.split('\n');
+                let bodyBlock;
+                if (bodyLines.length === 1) {
+                    bodyBlock = '"' + escapedBody.replace(/\n/g, '\\n') + '"';
+                } else {
+                    bodyBlock = '"""\n      ' + bodyLines.join('\n      ') + '\n    """';
+                }
+                return `# Atom snippets (snippets.cson)
+'.text.plain, .source':
+  '${escapeAtomSingle(desc)}':
+    'prefix': '${escapeAtomSingle(trigger)}'
+    'body': ${bodyBlock}
+    'description': '${escapeAtomSingle(desc)}'`;
+            }
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+            function escapeAtomSingle(s) {
+                return s.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+            }
+
+            /* ---------- Rendering ---------- */
+
+            function render() {
+                const desc = descEl.value;
+                const trig = trigEl.value;
+                const snip = snipEl.value;
+
+                let result = '';
+                switch (currentMode) {
+                    case 'vscode': result = generateVSCode(desc, trig, snip); break;
+                    case 'zed': result = generateZed(desc, trig, snip); break;
+                    case 'sublime': result = generateSublime(desc, trig, snip); break;
+                    case 'atom': result = generateAtom(desc, trig, snip); break;
+                }
+                outEl.textContent = result;
+                updateUsageHint();
+            }
+
+            function updateUsageHint() {
+                const hints = {
+                    vscode: 'VSCode：按下 <code>Ctrl/Cmd + Shift + P</code> → 输入「Configure User Snippets」→ 选择对应语言，将内容粘贴到 JSON 文件的大括号中。',
+                    zed: 'Zed：打开 <code>zed/snippets.json</code>（通过 Zed → Settings → Snippets），将对象合并到对应语言的片段集合中。',
+                    sublime: 'Sublime Text：将文件另存为 <code>xxx.sublime-snippet</code>，放入 User 包目录（Packages/User/），重启或重新加载即可。',
+                    atom: 'Atom：打开配置中的 <code>snippets.cson</code>（File → Snippets），将片段粘贴进去，按需调整 scope（作用域）。'
+                };
+                usageHint.innerHTML = hints[currentMode] || '';
+            }
+
+            /* ---------- Events ---------- */
+
+            [descEl, trigEl, snipEl].forEach(el => {
+                el.addEventListener('input', render);
+                el.addEventListener('keyup', e => {
+                    if (e.key === 'Tab' && el === snipEl) {
+                        // Allow Tab to insert spaces in textarea
+                        e.preventDefault();
+                        const start = snipEl.selectionStart;
+                        const end = snipEl.selectionEnd;
+                        const val = snipEl.value;
+                        snipEl.value = val.substring(0, start) + '  ' + val.substring(end);
+                        snipEl.selectionStart = snipEl.selectionEnd = start + 2;
+                        render();
+                    }
+                });
+            });
+
+            modeBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modeBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentMode = btn.dataset.mode;
+                    render();
+                });
+            });
+
+            copyBtn.addEventListener('click', async () => {
+                const text = outEl.textContent;
+                try {
+                    if (navigator.clipboard && window.isSecureContext) {
+                        await navigator.clipboard.writeText(text);
+                    } else {
+                        // Fallback
+                        const ta = document.createElement('textarea');
+                        ta.value = text;
+                        ta.style.position = 'fixed'; ta.style.left = '-9999px';
+                        document.body.appendChild(ta);
+                        ta.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(ta);
+                    }
+                    copyBtn.textContent = 'Copied ✓';
+                    copyBtn.classList.add('copied');
+                    showToast();
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy snippet';
+                        copyBtn.classList.remove('copied');
+                    }, 1800);
+                } catch (err) {
+                    copyBtn.textContent = 'Copy failed';
+                    setTimeout(() => { copyBtn.textContent = 'Copy snippet'; }, 1800);
+                }
+            });
+
+            function showToast() {
+                toast.classList.add('show');
+                clearTimeout(showToast._t);
+                showToast._t = setTimeout(() => toast.classList.remove('show'), 1600);
+            }
+
+            /* ---------- Init ---------- */
+            render();
+        })();
+    </script>
+</body>
+
+</html>
+<!--15357757732573747210080509-->
